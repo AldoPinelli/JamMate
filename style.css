@@ -1,0 +1,161 @@
+/* Impostazioni generali del corpo della pagina */
+body {
+    margin: 0; /* Rimuove il margine di default */
+    font-family: Arial, sans-serif; /* Imposta il font */
+    display: flex; /* Abilita il layout flessibile */
+    justify-content: center; /* Centra gli elementi orizzontalmente */
+    align-items: center; /* Centra gli elementi verticalmente */
+    height: 100vh; /* Altezza del viewport */
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Sfondo gradiente */
+    color: white; /* Colore del testo */
+    overflow: hidden;
+}
+
+/* Contenitore principale */
+.container {
+    text-align: center; /* Centra il testo */
+    transition: transform 1s ease-in-out; /* Aggiunge una transizione fluida allo spostamento */
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 500px;
+}
+
+/* Contenitore seconda interfaccia */
+.container2 {
+    position: fixed; /* Fissa il contenitore alla viewport */
+    top: 0; /* Allineamento alla parte superiore */
+    left: 0; /* Allineamento a sinistra */
+    width: 100%; /* Larghezza completa */
+    display: flex; /* Abilita il layout flexbox */
+    flex-direction: column; /* Posiziona gli elementi verticalmente */
+    justify-content: flex-start; /* Allinea gli elementi verso l'alto */
+    align-items: center; /* Centra gli elementi orizzontalmente */
+}
+
+
+/* Titolo della pagina */
+.title {
+    font-size: 2rem; /* Dimensione del font */
+    margin-bottom: 20px; /* Spaziatura inferiore */
+}
+
+/* Stile del bottone iniziale */
+.start-button {
+    padding: 15px 30px; /* Spazi interni */
+    font-size: 1rem; /* Dimensione del font */
+    background-color: #ff8c00; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    cursor: pointer; /* Cambia il cursore quando si passa sopra */
+    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+}
+
+/* Cambia il colore del bottone al passaggio del mouse */
+.start-button:hover {
+    background-color: #ff7700;
+}
+
+/* Sezione nascosta per i bottoni di caricamento/registrazione */
+.upload-record-buttons {
+    opacity: 0; /* Nascondi inizialmente */
+    transition: opacity 0.3s ease-in-out; /* Fai comparire gradualmente */
+}
+
+/* Bottoni di caricamento/registrazione */
+.upload-record-buttons button {
+    margin: 10px; /* Spaziatura tra i bottoni */
+    padding: 15px 25px; /* Spazi interni */
+    font-size: 1rem; /* Dimensione del font */
+    background-color: #008cba; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    cursor: pointer; /* Cambia il cursore quando si passa sopra */
+    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+    margin-top: 50px; /* Spaziatura superiore */
+}
+
+/* Cambia il colore dei bottoni al passaggio del mouse */
+.upload-record-buttons button:hover {
+    background-color: #007bb5;
+}
+
+
+/* Stile della waveform */
+#waveform {
+    height: 150px;
+    border-radius: 8px;
+    background-color: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+/* Stile per il pulsante di riproduzione */
+.styled-button {
+    margin: 10px;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #008cba;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+}
+
+.styled-button:hover {
+    background-color: #007bb5;
+}
+
+
+#backBtn {
+    position: absolute;         /* Posizione assoluta rispetto al contenitore */
+    top: 20px;                 /* Distanza dal bordo superiore */
+    left: 20px;                /* Distanza dal bordo sinistro */
+    z-index: 10;               /* Assicurati che il pulsante sia sopra altri elementi */
+}
+
+
+.genres, .loop-length {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Pulsante selezionabile */
+.btn {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 2px solid #444;
+    padding: 8px 15px;
+    font-size: 11px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Effetto hover */
+.btn:hover {
+    background-color: #444;
+}
+
+/* Stato selezionato */
+.btn.selected {
+    background-color: #4CAF50;
+    color: #fff;
+    border-color: #4CAF50;
+}
+
+
+h1{
+    margin: 10px 0; /* Riduce la distanza tra le righe */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 18px; /* Riduce la dimensione del titolo */
+    text-align: center;
+}
+
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://unpkg.com/tone"></script>
+    <!-- Collega il file CSS esterno -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Titolo della pagina -->
+        <div class="title">Sei pronto per Jammare con JamMate? Carica o registra la melodia che ti passa per la testa.</div>
+        <!-- Bottone per iniziare -->
+        <button class="start-button" id="startBtn">Iniziamo</button>
+        <!-- Sezione nascosta con bottoni per caricare o registrare un file -->
+        <div class="upload-record-buttons" id="actionButtons">
+            <button id="uploadBtn">Carica un file audio</button>
+            <button id="recordBtn">Registra la tua traccia dal microfono</button>
+        </div>
+        <!-- Timer per la registrazione -->
+        
+    </div>
+
+    <div class="container2" style="display: none;">
+        <button id="backBtn" class="styled-button">Torna indietro</button>
+        
+
+        <h1>Con che generi vorresti sperimentare oggi?</h1>
+        <div class="genres">
+            <button class="btn genre-btn">Trap</button>
+            <button class="btn genre-btn">Rock</button>
+            <button class="btn genre-btn">Jazz</button>
+            <button class="btn genre-btn">Pop</button>
+            <button class="btn genre-btn">Funk</button>
+        </div>
+
+        <h1>Quanto lungo vuoi che sia il tuo loop?</h1>
+        <div class="loop-length">
+            <button class="btn loop-btn">4 Bars</button>
+            <button class="btn loop-btn">8 Bars</button>
+            <button class="btn loop-btn">16 Bars</button>
+        </div>
+        <!-- Pulsante JAM -->
+        <button id= "jam-button" class="styled-button">JAM!</button>
+        <div class="controls">
+            <button id="start_Btn" class="control-btn">Start</button>
+            <button id="stop_Btn" class="control-btn">Stop</button>
+        </div>
+    </div>
+    
+
+    <!-- Collega il file JavaScript esterno -->
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="https://unpkg.com/tone"></script>
+    <script src="libs/dsp.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
