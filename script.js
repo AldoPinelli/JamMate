@@ -212,10 +212,25 @@ function renderWaveform(audioURL) {
     waveContainer.appendChild(analyzeBtn);
     
     analyzeBtn.addEventListener('click', async() => {
-        container.style.display = 'none';  // Nascondi il primo contenitore
-        container2.style.display = 'flex'; // Mostra il secondo contenitore
+        //container.style.display = 'none';  // Nascondi il primo contenitore
+        //container2.style.display = 'flex'; // Mostra il secondo contenitore
         //const dynamicElements = document.querySelectorAll('#waveContainer, #countdownDisplay, #timer');
         //dynamicElements.forEach(element => element.remove());
+
+        
+        const loadingContainer = document.createElement('div');
+        loadingContainer.className = 'div';
+
+        const loadingText = document.createElement('p');
+        loadingText.id = 'h2';
+        loadingText.textContent = 'Detecting bpm and keys....';
+        
+        const spanElement = document.createElement('span');
+        spanElement.id = 'lol';
+        loadingText.appendChild(spanElement);
+
+        loadingContainer.appendChild(loadingText);
+        container.appendChild(loadingContainer);
 
         //cambio sample rate della melodia caricata dall'utente
         melodyAudioBuffer = await Utility.loadBuffer(uploaded_file, audioContext);
@@ -237,6 +252,35 @@ function renderWaveform(audioURL) {
         var detectedKeys = KEY_detection.detectKey(notes);
         console.log("Tonalità trovate: ", detectedKeys);
 
+       setTimeout(() => { 
+            
+            const resultContainer = document.createElement('div');
+            resultContainer.className = 'result-container';
+
+            const bpmText = document.createElement('p');
+            bpmText.textContent = `Detected Bpm: ${bpm}`;
+            resultContainer.appendChild(bpmText);
+
+            const keysText = document.createElement('p');
+            keysText.textContent = `Detected possible Keys: ${detectedKeys.join(', ')}`;
+            resultContainer.appendChild(keysText);
+
+            const actionButton = document.createElement('button');
+            actionButton.className = 'styled-button action-button'; 
+            actionButton.textContent = 'Partiamo!'; 
+
+            
+            resultContainer.appendChild(actionButton);
+
+           
+            actionButton.addEventListener('click', () => {
+                container.style.display = 'none'; 
+                container2.style.display = 'flex'; 
+            });
+           
+            container.appendChild(resultContainer);
+            
+        }, 2500);
     
     });
 }
@@ -279,7 +323,14 @@ let loopDuration;
 
 backBtn.addEventListener('click', () => {
     container2.style.display = 'none';  // Nascondi il secondo contenitore
-    container.style.display = 'block'; // Mostra il primo contenitore
+    container.style.display = 'flex'; // Mostra il primo contenitore
+
+    const resultContainer = document.querySelector('.result-container');
+    const loadingContainer = document.querySelector('.div');
+    if (resultContainer && loadingContainer) {
+        resultContainer.remove();
+        loadingContainer.remove();
+    }
 });
 
 const genreButtons = document.querySelectorAll('.genre-btn');
