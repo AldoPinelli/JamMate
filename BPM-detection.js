@@ -82,3 +82,20 @@ export function getBpm(buffer) {
 }
 
 
+export function getClosestPeakToZero(groups) {
+  if (!groups || groups.length === 0) {
+    throw new Error("No groups provided.");
+  }
+
+  // Trova il gruppo con il BPM più ricorrente
+  const mostFrequentGroup = groups.reduce((prev, curr) => 
+    (curr.count > prev.count ? curr : prev), groups[0]
+  );
+
+  // Trova il picco più vicino allo zero nel gruppo selezionato
+  const closestPeak = mostFrequentGroup.occurrences.reduce((prev, curr) =>
+    (Math.abs(curr) < Math.abs(prev) ? curr : prev)
+  );
+
+  return closestPeak; // Restituisce la posizione del picco più vicino allo zero
+}

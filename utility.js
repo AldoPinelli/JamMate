@@ -128,16 +128,38 @@ export async function createDrumLoop(url, originalBpm, newBpm, audioContext,loop
   }
 }
 
-// Funzione per il resampling dei dati (cambia il sample rate)
-function resample(inputData, originalRate, targetRate) {
-  const ratio = originalRate / targetRate;
-  const resampledLength = Math.floor(inputData.length / ratio);
-  const resampledData = new Float32Array(resampledLength);
-  
-  for (let i = 0; i < resampledLength; i++) {
-    const index = Math.floor(i * ratio);
-    resampledData[i] = inputData[index];
+export function trimBuffer(audioBuffer, startSample, audioContext) {
+  if (startSample >= audioBuffer.length) {
+    throw new Error("Start sample is beyond the length of the audio buffer");
   }
-  
-  return resampledData;
+
+  const trimmedLength = audioBuffer.length - startSample;
+  const trimmedBuffer = audioContext.createBuffer(
+    audioBuffer.numberOfChannels,
+    trimmedLength,
+    audioBuffer.sampleRate
+  );
+
+  for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
+    const channelData = audioBuffer.getChannelData(channel);
+    const trimmedChannelData = trimmedBuffer.getChannelData(channel);
+    trimmedChannelData.set(channelData.subarray(startSample));
+  }
+
+  return trimmedBuffer;
+}
+
+
+
+export function syncWaveformWithAudio(loopDuration, intervalObj, wavesurfers) {
+  if (intervalObj.id) {
+      clearInterval(intervalObj.id); // Ferma l'intervallo precedente se esiste
+  }
+
+  intervalObj.id = setInterval(() => {
+      wavesurfers.forEach(wavesurfer => {
+          wavesurfer.seekTo(0); // Porta il cursore all'inizio della forma d'onda
+          wavesurfer.play(); 
+      });
+  }, loopDuration * 1000); // Intervallo uguale alla durata del loop in millisecondi
 }

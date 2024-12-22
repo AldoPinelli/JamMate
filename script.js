@@ -1,7 +1,7 @@
 import * as BPM_detection from './BPM-detection.js';
 import * as Utility from './utility.js';
 import * as KEY_detection from './KEY-detection.js';
-import * as buffer_to_wav from './buffer_to_wav.js'; 
+import * as buffer_to_wav from './buffer_to_wav.js';
 
 const audioContext = new AudioContext({ sampleRate: 44100 });
 
@@ -31,11 +31,11 @@ uploadBtn.addEventListener('click', () => {
 
     //aggiungo un event listener per caricare il file audio
     fileInput.onchange = () => {
-        const file = fileInput.files[0];     
+        const file = fileInput.files[0];
         if (!validTypes.includes(file.type.toLowerCase())) {
             console.error('Tipo di file non supportato. Seleziona un file WAV, MP3 o AIFF.');
             return;
-        } 
+        }
         console.log("File caricato e pronto per essere lazzarato: ", file);
         uploaded_file = file;
         renderWaveform(URL.createObjectURL(file));
@@ -56,7 +56,7 @@ let countdown = 3;
 let alreadyPressed = false;
 
 recordBtn.addEventListener('click', async () => {
-    
+
     if (mediaRecorder && mediaRecorder.state === 'recording') {
         // Stop alla registrazione
         mediaRecorder.stop();
@@ -96,10 +96,10 @@ recordBtn.addEventListener('click', async () => {
             startRecording(); // Inizia la registrazione
         }
     }, 1000);
-    
+
 });
 
-async function startRecording() {    
+async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         let mimeType = "";
@@ -112,7 +112,7 @@ async function startRecording() {
         } else {
             alert("Il tuo browser non supporta la registrazione audio.");
             throw new Error("Formato audio non supportato.");
-        } 
+        }
         console.log("Usando il formato audio: ", mimeType);
         mediaRecorder = new MediaRecorder(stream, { mimeType });
         recordingChunks = [];
@@ -191,7 +191,7 @@ function renderWaveform(audioURL) {
     container.appendChild(waveContainer);
 
     // Inizializza raw_wavesurfer con wavesurfer.js
-    raw_wavesurfer = configureWaveSurfer('#waveform', 'violet', 'purple');  
+    raw_wavesurfer = configureWaveSurfer('#waveform', 'violet', 'purple');
     raw_wavesurfer.load(audioURL);
 
     // Aggiungi il pulsante Play/Pause
@@ -239,10 +239,16 @@ function renderWaveform(audioURL) {
         if (melodyAudioBuffer.numberOfChannels === 1) {
             melodyAudioBuffer = Utility.convertMonoToStereo(melodyAudioBuffer, audioContext);
         }
-        
+
         //console.log("Numero di canali: ", melodyAudioBuffer.numberOfChannels);
-        bpm = BPM_detection.getBpm(melodyAudioBuffer, audioContext); 
+        const peaks = BPM_detection.getPeaks([melodyAudioBuffer.getChannelData(0), melodyAudioBuffer.getChannelData(1)]);
+        const groups = BPM_detection.getIntervals(peaks);
+        var top = groups.sort(function (intA, intB) {
+            return intB.count - intA.count;
+        }).splice(0, 5); //prendo i primi 5 gruppi con tempo piu frequente e li metto in array top
+        bpm = Math.round(top[0].tempo);
         console.log("BPM trovato: ", bpm);
+
 
         //key detection
         const fftSize = 4096;
@@ -251,6 +257,15 @@ function renderWaveform(audioURL) {
         var notes = KEY_detection.extractNotesFromChroma(chromaData);
         var detectedKeys = KEY_detection.detectKey(notes);
         console.log("Tonalità trovate: ", detectedKeys);
+
+        //troviamo il punto di taglio per la melodia
+        const cutPoint = BPM_detection.getClosestPeakToZero(groups);
+        console.log("Punto di taglio: ", cutPoint);
+
+        // Elimina la parte prima del cutPoint in melodyAudioBuffer
+        melodyAudioBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPoint, audioContext);
+        console.log("Buffer tagliato: ", melodyAudioBuffer);
+
 
        setTimeout(() => { 
             
@@ -313,16 +328,15 @@ function configureWaveSurfer(containerId, waveColor, progressColor) {
 
 
 
-
-
 //GESTIONE DEL CONTAINER 2
 const backBtn = document.getElementById('backBtn');
 const jamButton = document.getElementById('jam-button');
-let melodyLoopBuffer;
 let loopDuration;
 
 backBtn.addEventListener('click', () => {
     container2.style.display = 'none';  // Nascondi il secondo contenitore
+    container.style.display = 'block'; // Mostra il primo contenitore
+    container3.style.display = 'none'; // Nascondi il terzo contenitore
     container.style.display = 'flex'; // Mostra il primo contenitore
 
     const resultContainer = document.querySelector('.result-container');
@@ -364,9 +378,16 @@ loopButtons.forEach(button => {
 
 start_Btn = document.getElementById('start_Btn');
 stop_Btn = document.getElementById('stop_Btn');
+let melodyLoopBuffer;
 let drumLoopBuffer;
+let bassLoopBuffer;
 const audioURL = "https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/drum_162bpm_24.mp3";
-let already_jammed = false;
+const bassURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/80s-Funk-Slap-Bass.mp3";
+const container3 = document.querySelector('.container3');
+let melodyWave = configureWaveSurfer('#melodyWaveform', 'violet', 'purple');
+let drumWave = configureWaveSurfer('#drumWaveform', 'yellow', 'orange');
+let bassWave = configureWaveSurfer('#bassWaveform', 'blue', 'lightblue');
+
 
 let melodyTonePlayer = new Tone.Player({
     loop: true,
@@ -382,42 +403,103 @@ let bassTonePlayer = new Tone.Player({
 
 
 jamButton.addEventListener('click', async () => {
-    if (already_jammed) {
-
-    }
     if (selectedGenres.length === 0 || !selectedLoopLength) {
         alert('Seleziona almeno un genere e una lunghezza del loop.');
         return;
     }
+    container3.style.display = 'flex';
     console.log('Generi selezionati:', selectedGenres);
     console.log('Lunghezza del loop selezionata:', selectedLoopLength);
-    
 
+    //CREAZIONE MELODIA LOOP
     melodyLoopBuffer = await Utility.createJamLoop(melodyAudioBuffer, bpm, selectedLoopLength, audioContext);
     console.log("Loop creato: ", melodyLoopBuffer);
     melodyTonePlayer.buffer = melodyLoopBuffer;
     console.log("Melody Tone Player: ", melodyLoopBuffer.length);
+    loopDuration = melodyLoopBuffer.duration;
 
-
-    drumLoopBuffer = await Utility.createDrumLoop(audioURL,162, bpm, audioContext, selectedLoopLength);
+    //CREAZIONE DRUM LOOP
+    drumLoopBuffer = await Utility.createDrumLoop(audioURL, 162, bpm, audioContext, selectedLoopLength);
     drumTonePlayer.buffer = drumLoopBuffer;
     console.log("Drum Tone Player: ", drumLoopBuffer.length);
 
+    //CREAZIONE BASS LOOP
+    bassLoopBuffer = await Utility.createDrumLoop(bassURL, 120, bpm, audioContext, selectedLoopLength);
+    bassTonePlayer.buffer = bassLoopBuffer;
+    console.log("Bass Tone Player: ", bassLoopBuffer.length);
 
 
 
-    // Controllo con i pulsanti
-    start_Btn.addEventListener('click', () => {
-        melodyTonePlayer.start();
-        drumTonePlayer.start();
-    });
-    stop_Btn.addEventListener('click', () => {
-        melodyTonePlayer.stop();
-        drumTonePlayer.stop();
-    });
 
-    
+    //CREAZIONE DELLA PARTE GRAFICA
+    //Melodia
+    const melodyData = await buffer_to_wav.bufferToWave(melodyLoopBuffer);
+    const melodyBlob = new Blob([melodyData], { type: 'audio/wav' });
+    const melodyUrl = URL.createObjectURL(melodyBlob);
+    melodyWave.load(melodyUrl);
+    melodyWave.setVolume(0);
+
+    //Drum
+    const drumData = await buffer_to_wav.bufferToWave(drumLoopBuffer);
+    const drumBlob = new Blob([drumData], { type: 'audio/wav' });
+    const drumUrl = URL.createObjectURL(drumBlob);
+    drumWave.load(drumUrl);
+    drumWave.setVolume(0);
+
+    //Bass
+    const bassData = await buffer_to_wav.bufferToWave(bassLoopBuffer);
+    const bassBlob = new Blob([bassData], { type: 'audio/wav' });
+    const bassUrl = URL.createObjectURL(bassBlob);
+    bassWave.load(bassUrl);
+    bassWave.setVolume(0);
+
+
 });
+
+//START AND STOP BUTTONS
+let startTime;
+let loopStatus = false;
+const loopInterval = { id: null };
+start_Btn.addEventListener('click', () => {
+    if (loopStatus) {
+        return;
+    }
+    startTime = audioContext.currentTime + 0.1;
+
+    // Gestione tone player
+    melodyTonePlayer.start(startTime);
+    drumTonePlayer.start(startTime);
+    bassTonePlayer.start(startTime);
+
+    // Gestione wavesurfer
+    melodyWave.play(startTime);
+    drumWave.play(startTime);
+    bassWave.play(startTime);
+
+    Utility.syncWaveformWithAudio(loopDuration, loopInterval, [melodyWave, drumWave, bassWave]);
+    loopStatus = true;
+});
+
+stop_Btn.addEventListener('click', () => {
+    if (!loopStatus) {
+        return;
+    }
+    // Gestione tone player
+    melodyTonePlayer.stop();
+    drumTonePlayer.stop();
+    bassTonePlayer.stop();
+
+    // Gestione wavesurfer
+    melodyWave.stop();
+    drumWave.stop();
+    bassWave.stop();
+
+    clearInterval(loopInterval.id); // Ferma l'intervallo
+    loopStatus = false;
+});
+
+
+
 
 
 

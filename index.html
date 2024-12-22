@@ -7,6 +7,8 @@
     <!-- Collega il file CSS esterno -->
     <link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
     <div class="container">
         <!-- Titolo della pagina -->
@@ -44,10 +46,55 @@
         <!-- Pulsante JAM -->
         <button id= "jam-button" class="styled-button">JAM!</button>
         <div class="controls">
-            <button id="start_Btn" class="control-btn">Start</button>
-            <button id="stop_Btn" class="control-btn">Stop</button>
+            <button id="start_Btn" class="styled-button">Start</button>
+            <button id="stop_Btn" class="styled-button">Stop</button>
         </div>
+        <div id="try"></div>
+
+        <div class="container3">
+            <div class="wavecontainer">
+                <div id="melodyWaveform" class="waveform"></div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Volume</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Reverb</div>
+                </div>
+            </div>
+            <div class="wavecontainer">
+                <div id="drumWaveform" class="waveform"></div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Volume</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Reverb</div>
+                </div>
+            </div>
+            <div class="wavecontainer">
+                <div id="bassWaveform" class="waveform"></div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Volume</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="label">Reverb</div>
+                </div>
+            </div>
     </div>
+</div>
+
+    
     
 
     <!-- Collega il file JavaScript esterno -->
