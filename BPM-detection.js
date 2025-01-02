@@ -41,7 +41,7 @@ export function getIntervals(peaks){ //calcolo la distanza tra i picchi
         occurrences: [peak.position, peaks[index + i].position]
       };
 
-      while (group.tempo < 90) { //normalizzazione
+      while (group.tempo < 70) { //normalizzazione
         group.tempo *= 2;
       }
 

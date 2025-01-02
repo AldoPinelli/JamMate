@@ -3,6 +3,8 @@ import * as Utility from './utility.js';
 import * as KEY_detection from './KEY-detection.js';
 import * as buffer_to_wav from './buffer_to_wav.js';
 
+
+
 const audioContext = new AudioContext({ sampleRate: 44100 });
 
 // Recupera il bottone iniziale, i bottoni di azione e il contenitore principale
@@ -14,6 +16,7 @@ let raw_wavesurfer = null;
 let bpm;
 let uploaded_file;
 let melodyAudioBuffer;
+const keyButtons = document.querySelectorAll('.key-btn');
 
 startBtn.addEventListener('click', () => {
     // Sposta il contenitore verso l'alto
@@ -54,6 +57,7 @@ let recordingInterval = null;
 let countdownInterval = null;
 let countdown = 3;
 let alreadyPressed = false;
+let detectedKeys;
 
 recordBtn.addEventListener('click', async () => {
 
@@ -210,21 +214,21 @@ function renderWaveform(audioURL) {
     analyzeBtn.textContent = "Analizza la traccia e partiamo!";
     analyzeBtn.classList.add('styled-button');
     waveContainer.appendChild(analyzeBtn);
-    
-    analyzeBtn.addEventListener('click', async() => {
+
+    analyzeBtn.addEventListener('click', async () => {
         //container.style.display = 'none';  // Nascondi il primo contenitore
         //container2.style.display = 'flex'; // Mostra il secondo contenitore
         //const dynamicElements = document.querySelectorAll('#waveContainer, #countdownDisplay, #timer');
         //dynamicElements.forEach(element => element.remove());
 
-        
+
         const loadingContainer = document.createElement('div');
         loadingContainer.className = 'div';
 
         const loadingText = document.createElement('p');
         loadingText.id = 'h2';
         loadingText.textContent = 'Detecting bpm and keys....';
-        
+
         const spanElement = document.createElement('span');
         spanElement.id = 'lol';
         loadingText.appendChild(spanElement);
@@ -255,7 +259,7 @@ function renderWaveform(audioURL) {
         const fft = new FFT(fftSize, audioContext.sampleRate);
         const chromaData = KEY_detection.chroma(melodyAudioBuffer, fft, fftSize);
         var notes = KEY_detection.extractNotesFromChroma(chromaData);
-        var detectedKeys = KEY_detection.detectKey(notes);
+        detectedKeys = KEY_detection.detectKey(notes);
         console.log("Tonalità trovate: ", detectedKeys);
 
         //troviamo il punto di taglio per la melodia
@@ -267,8 +271,8 @@ function renderWaveform(audioURL) {
         console.log("Buffer tagliato: ", melodyAudioBuffer);
 
 
-       setTimeout(() => { 
-            
+        setTimeout(() => {
+
             const resultContainer = document.createElement('div');
             resultContainer.className = 'result-container';
 
@@ -281,22 +285,26 @@ function renderWaveform(audioURL) {
             resultContainer.appendChild(keysText);
 
             const actionButton = document.createElement('button');
-            actionButton.className = 'styled-button action-button'; 
-            actionButton.textContent = 'Partiamo!'; 
+            actionButton.className = 'styled-button action-button';
+            actionButton.textContent = 'Partiamo!';
 
-            
+
             resultContainer.appendChild(actionButton);
 
-           
+
             actionButton.addEventListener('click', () => {
-                container.style.display = 'none'; 
-                container2.style.display = 'flex'; 
+                container.style.display = 'none';
+                container2.style.display = 'flex';
+                keyButtons[0].textContent = detectedKeys[0];
+                keyButtons[1].textContent = detectedKeys[1];
+                keyButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedKey = null;
             });
-           
+
             container.appendChild(resultContainer);
-            
-        }, 2500);
-    
+
+        }, 100);
+
     });
 }
 
@@ -323,16 +331,37 @@ function configureWaveSurfer(containerId, waveColor, progressColor) {
 
 
 
-
-
-
-
-
 //GESTIONE DEL CONTAINER 2
 const backBtn = document.getElementById('backBtn');
 const jamButton = document.getElementById('jam-button');
-let loopDuration;
+const genreButtons = document.querySelectorAll('.genre-btn');
+const loopButtons = document.querySelectorAll('.loop-btn');
+const algorithmButtons = document.querySelectorAll('.algorithm-btn');
 
+let loopDuration;
+let loopDurationSamples;
+let selectedKey;
+let selectedGenres = [];
+let selectedLoopLength;
+let selectedAlgorithm;
+start_Btn = document.getElementById('start_Btn');
+stop_Btn = document.getElementById('stop_Btn');
+let melodyLoopBuffer;
+let drumLoopBuffer;
+let bassLoopBuffer;
+const audioURL = "https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/drum_162bpm_24.mp3";
+const bassURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/theChicken-Bb.mp3";
+const metronomeURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/metronome.mp3";
+const container3 = document.querySelector('.container3');
+
+let melodyWave = configureWaveSurfer('#melodyWaveform', 'violet', 'purple');
+let drumWave = configureWaveSurfer('#drumWaveform', 'yellow', 'orange');
+let bassWave = configureWaveSurfer('#bassWaveform', 'blue', 'lightblue');
+
+
+
+
+//Bottoni
 backBtn.addEventListener('click', () => {
     container2.style.display = 'none';  // Nascondi il secondo contenitore
     container.style.display = 'block'; // Mostra il primo contenitore
@@ -346,11 +375,6 @@ backBtn.addEventListener('click', () => {
         loadingContainer.remove();
     }
 });
-
-const genreButtons = document.querySelectorAll('.genre-btn');
-const loopButtons = document.querySelectorAll('.loop-btn');
-let selectedGenres = [];
-let selectedLoopLength;
 
 genreButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -374,40 +398,78 @@ loopButtons.forEach(button => {
     });
 });
 
+keyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        keyButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        selectedKey = button.textContent.charAt(0);
+        console.log('Chiave selezionata:', selectedKey);
+    });
+});
+
+algorithmButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        algorithmButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        selectedAlgorithm = button.textContent.split(' ')[1];
+        console.log('Algoritmo selezionato:', selectedAlgorithm);
+    });
+});
+
+//inizializzazione effetti
+//Reverb
+let melodyReverb = new Tone.Reverb({ decay: 1, wet: 0 }).toDestination();
+let drumReverb = new Tone.Reverb({ decay: 1, wet: 0 }).toDestination();
+let bassReverb = new Tone.Reverb({ decay: 1, wet: 0 }).toDestination();
+
+//Delay
+let melodyDelay = new Tone.FeedbackDelay("8n", 0.3).connect(melodyReverb);
+melodyDelay.wet.value = 0;
+let drumDelay = new Tone.FeedbackDelay("8n", 0.3).connect(drumReverb);
+drumDelay.wet.value = 0;
+let bassDelay = new Tone.FeedbackDelay("8n", 0.3).connect(bassReverb);
+bassDelay.wet.value = 0;
 
 
-start_Btn = document.getElementById('start_Btn');
-stop_Btn = document.getElementById('stop_Btn');
-let melodyLoopBuffer;
-let drumLoopBuffer;
-let bassLoopBuffer;
-const audioURL = "https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/drum_162bpm_24.mp3";
-const bassURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/80s-Funk-Slap-Bass.mp3";
-const container3 = document.querySelector('.container3');
-let melodyWave = configureWaveSurfer('#melodyWaveform', 'violet', 'purple');
-let drumWave = configureWaveSurfer('#drumWaveform', 'yellow', 'orange');
-let bassWave = configureWaveSurfer('#bassWaveform', 'blue', 'lightblue');
 
-
+//Iizializzazione Tone Players
 let melodyTonePlayer = new Tone.Player({
     loop: true,
-}).toDestination();
+}).connect(melodyDelay);
+melodyTonePlayer.volume.value = Tone.gainToDb(1 / 2);
+
 
 let drumTonePlayer = new Tone.Player({
+    playbackRate: 1,
     loop: true,
-}).toDestination();
+}).connect(drumDelay);
+drumTonePlayer.volume.value = Tone.gainToDb(1 / 2);
+
+
+let bassPitchShift = new Tone.PitchShift({
+    pitch: 0, // Default pitch shift value
+}).connect(bassDelay); // Connect to bass delay
 
 let bassTonePlayer = new Tone.Player({
     loop: true,
+}).connect(bassPitchShift);
+bassTonePlayer.volume.value = Tone.gainToDb(1 / 2);
+
+
+
+let metronome = new Tone.Player({
+    url: metronomeURL, // URL del suono del metronomo
 }).toDestination();
 
-
+//  JAM BUTTON
 jamButton.addEventListener('click', async () => {
-    if (selectedGenres.length === 0 || !selectedLoopLength) {
-        alert('Seleziona almeno un genere e una lunghezza del loop.');
+    if (selectedGenres.length === 0 || !selectedLoopLength || !selectedKey) {
+        alert('Seleziona almeno un genere, una lunghezza del loop e una chiave.');
         return;
     }
+
     container3.style.display = 'flex';
+    document.querySelector('.controls').style.display = 'block';
     console.log('Generi selezionati:', selectedGenres);
     console.log('Lunghezza del loop selezionata:', selectedLoopLength);
 
@@ -417,17 +479,34 @@ jamButton.addEventListener('click', async () => {
     melodyTonePlayer.buffer = melodyLoopBuffer;
     console.log("Melody Tone Player: ", melodyLoopBuffer.length);
     loopDuration = melodyLoopBuffer.duration;
+    loopDurationSamples = melodyLoopBuffer.length;
 
     //CREAZIONE DRUM LOOP
-    drumLoopBuffer = await Utility.createDrumLoop(audioURL, 162, bpm, audioContext, selectedLoopLength);
+    /*drumLoopBuffer = await Utility.createDrumLoop(audioURL, 78, bpm, audioContext, selectedLoopLength);
+    drumTonePlayer.buffer = drumLoopBuffer;
+    console.log("Drum Tone Player: ", drumLoopBuffer.length);*/
+    drumLoopBuffer = await Utility.fetchAudioBuffer(audioURL, audioContext);
+    drumLoopBuffer = await Utility.cutAudioBuffer(drumLoopBuffer, selectedLoopLength, audioContext);
+    drumLoopBuffer = await Utility.timeStretchingWithoutPitchChange(drumLoopBuffer, loopDurationSamples, audioContext);
     drumTonePlayer.buffer = drumLoopBuffer;
     console.log("Drum Tone Player: ", drumLoopBuffer.length);
 
+
     //CREAZIONE BASS LOOP
-    bassLoopBuffer = await Utility.createDrumLoop(bassURL, 120, bpm, audioContext, selectedLoopLength);
+    bassLoopBuffer = await Utility.fetchAudioBuffer(bassURL, audioContext);
+    bassLoopBuffer = await Utility.cutAudioBuffer(bassLoopBuffer,selectedLoopLength, audioContext);
+    bassLoopBuffer = await Utility.timeStretchingWithoutPitchChange(bassLoopBuffer, loopDurationSamples, audioContext);
     bassTonePlayer.buffer = bassLoopBuffer;
     console.log("Bass Tone Player: ", bassLoopBuffer.length);
 
+    
+
+
+
+    //TARARE EFFETTI
+    melodyDelay.delayTime.value = (60 / bpm) * 0.5; // Imposta il tempo di delay per la melodia
+    drumDelay.delayTime.value = (60 / bpm) * 0.5; // Imposta il tempo di delay per la batteria
+    bassDelay.delayTime.value = (60 / bpm) * 0.5; // Imposta il tempo di delay per il basso
 
 
 
@@ -460,6 +539,7 @@ jamButton.addEventListener('click', async () => {
 let startTime;
 let loopStatus = false;
 const loopInterval = { id: null };
+let intervalId
 start_Btn.addEventListener('click', () => {
     if (loopStatus) {
         return;
@@ -470,6 +550,9 @@ start_Btn.addEventListener('click', () => {
     melodyTonePlayer.start(startTime);
     drumTonePlayer.start(startTime);
     bassTonePlayer.start(startTime);
+    /*intervalId = setInterval(() => {
+        metronome.start();
+    }, 60 / bpm * 1000);*/
 
     // Gestione wavesurfer
     melodyWave.play(startTime);
@@ -488,6 +571,9 @@ stop_Btn.addEventListener('click', () => {
     melodyTonePlayer.stop();
     drumTonePlayer.stop();
     bassTonePlayer.stop();
+    //clearInterval(intervalId);
+
+
 
     // Gestione wavesurfer
     melodyWave.stop();
@@ -497,6 +583,75 @@ stop_Btn.addEventListener('click', () => {
     clearInterval(loopInterval.id); // Ferma l'intervallo
     loopStatus = false;
 });
+
+
+
+
+//GESTIONE EFFETTI
+document.querySelectorAll('.slider').forEach(slider => {
+    slider.addEventListener('input', event => {
+        const slider = event.target;
+        const value = slider.value; // Valore corrente dello slider
+        const numberDisplay = slider.parentNode.querySelector('.number');
+        numberDisplay.textContent = value; // Aggiorna il numero visualizzato
+
+        const type = slider.dataset.type; // melody, drum o bass
+        const param = slider.dataset.param; // volume, reverb o delay
+
+        if (param === 'volume') {
+            // Seleziona il player corretto in base a data-type
+            switch (type) {
+                case 'melody':
+                    melodyTonePlayer.volume.value = Tone.gainToDb(value / 100); // Volume del player melody
+                    break;
+                case 'drum':
+                    drumTonePlayer.volume.value = Tone.gainToDb(value / 100); // Volume del player drum
+                    break;
+                case 'bass':
+                    bassTonePlayer.volume.value = Tone.gainToDb(value / 100); // Volume del player bass
+                    break;
+            }
+        } else if (param === 'reverb') {
+            // Modifica il riverbero per il player selezionato
+            switch (type) {
+                case 'melody':
+                    //melodyReverb.decay = value / 100 * 10; // Imposta il decay del riverbero
+                    melodyReverb.wet.value = value / 100; // Imposta il mix del riverbero
+                    break;
+                case 'drum':
+                    //drumReverb.decay = value / 100 * 10; // Imposta il decay del riverbero
+                    drumReverb.wet.value = value / 100; // Imposta il mix del riverbero
+                    break;
+                case 'bass':
+                    //bassReverb.decay = value / 100 * 10; // Imposta il decay del riverbero
+                    bassReverb.wet.value = value / 100; // Imposta il mix del riverbero
+                    break;
+            }
+        } else if (param === 'delay') {
+            // Modifica il delay per il player selezionato
+            switch (type) {
+                case 'melody':
+                    //melodyDelay.delayTime.value = value / 100 * 1; // Imposta il delay time (max 1 secondo)
+                    //melodyDelay.feedback.value = value / 100; // Imposta il feedback del delay
+                    melodyDelay.wet.value = value / 100; // Imposta il mix del delay
+                    break;
+                case 'drum':
+                    //drumDelay.delayTime.value = value / 100 * 1; // Imposta il delay time
+                    //drumDelay.feedback.value = value / 100; // Imposta il feedback del delay
+                    drumDelay.wet.value = value / 100; // Imposta il mix del delay
+                    break;
+                case 'bass':
+                    //bassDelay.delayTime.value = value / 100 * 1; // Imposta il delay time
+                    //bassDelay.feedback.value = value / 100; // Imposta il feedback del delay
+                    bassDelay.wet.value = value / 100; // Imposta il mix del delay
+                    break;
+            }
+        }
+    });
+});
+
+
+
 
 
 

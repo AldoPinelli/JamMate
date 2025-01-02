@@ -27,25 +27,45 @@
     <div class="container2" style="display: none;">
         <button id="backBtn" class="styled-button">Torna indietro</button>
         
-
-        <h1>Con che generi vorresti sperimentare oggi?</h1>
-        <div class="genres">
+    <div class="selection-row">
+        <div class="slection-container">
+            <h1>Con che generi vorresti sperimentare oggi?</h1>
+            <div class="genres">
             <button class="btn genre-btn">Trap</button>
             <button class="btn genre-btn">Rock</button>
             <button class="btn genre-btn">Jazz</button>
             <button class="btn genre-btn">Pop</button>
             <button class="btn genre-btn">Funk</button>
+            </div>
         </div>
-
-        <h1>Quanto lungo vuoi che sia il tuo loop?</h1>
-        <div class="loop-length">
+        <div class="slection-container">
+            <h1>Quanto lungo vuoi che sia il tuo loop?</h1>
+            <div class="loop-length">
             <button class="btn loop-btn">4 Bars</button>
             <button class="btn loop-btn">8 Bars</button>
             <button class="btn loop-btn">16 Bars</button>
+            </div>
         </div>
+    </div>
+    <div class="selection-row">
+        <div class="slection-container">
+            <h1>Quale chiave detectata si addice alla tua faccia di cazzo?</h1>
+            <div class="keys">
+                <button class="btn key-btn"></button>
+                <button class="btn key-btn"></button>
+            </div>
+        </div>
+        <div class="slection-container">
+            <h1>Scegli l'algoritmo per individuare il battere</h1>
+            <div class="onset-algorythm">
+                <button class="btn algorithm-btn">Algoritmo A</button>
+                <button class="btn algorithm-btn">Algoritmo B</button>
+            </div>
+        </div>
+    </div>
         <!-- Pulsante JAM -->
         <button id= "jam-button" class="styled-button">JAM!</button>
-        <div class="controls">
+        <div class="controls" style.display="none">
             <button id="start_Btn" class="styled-button">Start</button>
             <button id="stop_Btn" class="styled-button">Stop</button>
         </div>
@@ -55,40 +75,55 @@
             <div class="wavecontainer">
                 <div id="melodyWaveform" class="waveform"></div>
                 <div class="slidercontainer">
-                    <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="number">50</div>
+                    <input type="range" min="0" max="100" value="50" class="slider" data-type="melody" data-param="volume">
                     <div class="label">Volume</div>
                 </div>
                 <div class="slidercontainer">
                     <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="melody" data-param="reverb">
                     <div class="label">Reverb</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="melody" data-param="delay">
+                    <div class="label">Delay</div>
                 </div>
             </div>
             <div class="wavecontainer">
                 <div id="drumWaveform" class="waveform"></div>
                 <div class="slidercontainer">
-                    <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="number">50</div>
+                    <input type="range" min="0" max="100" value="50" class="slider" data-type="drum" data-param="volume">
                     <div class="label">Volume</div>
                 </div>
                 <div class="slidercontainer">
                     <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="drum" data-param="reverb">
                     <div class="label">Reverb</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="drum" data-param="delay">
+                    <div class="label">Delay</div>
                 </div>
             </div>
             <div class="wavecontainer">
                 <div id="bassWaveform" class="waveform"></div>
                 <div class="slidercontainer">
-                    <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <div class="number">50</div>
+                    <input type="range" min="0" max="100" value="50" class="slider" data-type="bass" data-param="volume">
                     <div class="label">Volume</div>
                 </div>
                 <div class="slidercontainer">
                     <div class="number">0</div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="bass" data-param="reverb">
                     <div class="label">Reverb</div>
+                </div>
+                <div class="slidercontainer">
+                    <div class="number">0</div>
+                    <input type="range" min="0" max="100" value="0" class="slider" data-type="bass" data-param="delay">
+                    <div class="label">Delay</div>
                 </div>
             </div>
     </div>

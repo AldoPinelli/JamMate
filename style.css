@@ -48,6 +48,20 @@ body {
     margin-top: 10px;
 }
 
+.selection-row {
+    display: flex; /* Abilita il layout flessibile */
+    justify-content: center; /* Centra gli elementi orizzontalmente */
+    flex-direction: row;
+    align-items: center; /* Centra gli elementi verticalmente */
+}
+
+.slection-container {
+    margin-left: 30px;
+    border: 2px solid orange;
+    border-radius: 10px;
+    padding: 10px;
+}
+
 /* Titolo della pagina */
 .title {
     font-size: 2rem; /* Dimensione del font */
@@ -277,3 +291,7 @@ h1{
     font-size: 18px; /* Dimensione del testo */
     line-height: 1.6; /* Spaziatura tra le righe */
 }
+
+
+
+
