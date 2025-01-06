@@ -1,5 +1,3 @@
-
-
 export async function loadBuffer(file, audioContext) {
   const arrayBuffer = await file.arrayBuffer();
   const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -64,7 +62,8 @@ export function createJamLoop(melodyAudioBuffer, bpm, loopLengthInBars, audioCon
     loopLengthInSamples,
     melodyAudioBuffer.sampleRate
   );
-
+  
+  //copia i dati nel nuovo audioBuffer, se la lunghezza del loop è maggiore di quella dell'audio originale, riempi con silenzio
   for (let channel = 0; channel < melodyAudioBuffer.numberOfChannels; channel++) {
     const channelData = melodyAudioBuffer.getChannelData(channel);
     const loopData = loopBuffer.getChannelData(channel);
@@ -338,6 +337,8 @@ export async function changeBufferTempo(audioBuffer, playbackRate) {
   return renderedBuffer;
 }
 
+//logica per timestratching senza cambiare pitch usando la dannata 
+//libreria soundTouchjs che mi ha fatto piangere la giornata di natale
 import SoundTouch from './libs/src/SoundTouch.js';
 /*
 export async function timeStretchingWithoutPitchChange(audioBuffer, originalBpm, targetBpm, audioContext) {
@@ -455,7 +456,7 @@ export async function timeStretchingWithoutPitchChange(audioBuffer, loopDuration
           adjustedChannelData.set(new Float32Array(loopDurationSamples - channelData.length), channelData.length);
         }
       }
-    
+
       return adjustedBuffer;
     }
 
@@ -467,7 +468,7 @@ export async function timeStretchingWithoutPitchChange(audioBuffer, loopDuration
 
 }
 
-export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext){
+export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext) {
   console.log("original bufferLenght: ", audioBuffer.length);
 
   if (loopLengthInBars === 16) {
@@ -505,4 +506,66 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
 
     throw new Error("Unsupported loop length in bars");
   }
+}
+
+  const keyMap = {
+    'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6,
+    'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
+  };
+// logica di estrazione databse
+function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks) {
+  let selectedTrack;
+  if (trackType === 'drum') {
+    // Selezione casuale tra le tracce di batteria con il genere specificato
+    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
+    selectedTrack = genreTracks[Math.floor(Math.random() * genreTracks.length)].getUrl();
+  } else if (trackType === 'bass') {
+    // Selezione casuale di una traccia di basso con il genere specificato
+    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
+    selectedTrack = genreTracks[Math.floor(Math.random() * genreTracks.length)]; // Seleziona randomicamente una traccia di basso
+
+    // Mappa la tonalità all'indice
+    const keyIndex = keyMap[key]; // Mappa la tonalità alla sua posizione (0 - 11)
+    selectedTrack = selectedTrack.getUrls()[keyIndex]; // Prendi la traccia corrispondente alla tonalità
+  }
+  return selectedTrack;
+}
+
+export async function selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks) {
+  let drumUrl, bassUrl;
+
+  if (selectedGenres.length === 1) {
+    // Se c'è solo un genere, seleziona le tracce con lo stesso genere per batteria e basso
+    const genre = selectedGenres[0].toLowerCase();
+    drumUrl = selectTrackByGenreAndKey(genre, selectedKey, 'drum', drumTracks, bassTracks);
+    bassUrl = selectTrackByGenreAndKey(genre, selectedKey, 'bass', drumTracks, bassTracks);
+  } else if (selectedGenres.length === 2) {
+    // Se ci sono due generi, seleziona casualmente quale applicare a batteria e basso
+    const genre1 = selectedGenres[0].toLowerCase();
+    const genre2 = selectedGenres[1].toLowerCase();
+
+    // Pesca casualmente quale genere applicare alla batteria e quale al basso
+    const isDrumGenreFirst = Math.random() > 0.5;
+    if (isDrumGenreFirst) {
+      drumUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'drum');
+      bassUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'bass');
+    } else {
+      drumUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'drum');
+      bassUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'bass');
+    }
+  }
+  return [drumUrl, bassUrl];
+}
+
+export function findTheFirstEnergyPeak(audioBuffer, threshold) {
+   // Soglia per considerare un picco significativo
+  const channelData = audioBuffer.getChannelData(0); // Analizza solo il primo canale
+
+  for (let i = 0; i < channelData.length; i++) {
+    if (Math.abs(channelData[i]) > threshold) {
+      return i; // Ritorna l'indice del primo picco significativo
+    }
+  }
+
+  return -1; // Ritorna -1 se non viene trovato alcun picco significativo
 }

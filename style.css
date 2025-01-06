@@ -1,4 +1,4 @@
-/* Impostazioni generali del corpo della pagina */
+/* Impostupzioni generali del corpo della pagina */
 body {
     margin: 0; /* Rimuove il margine di default */
     font-family: Arial, sans-serif; /* Imposta il font */
@@ -55,7 +55,7 @@ body {
     align-items: center; /* Centra gli elementi verticalmente */
 }
 
-.slection-container {
+.selection-container {
     margin-left: 30px;
     border: 2px solid orange;
     border-radius: 10px;
@@ -87,6 +87,10 @@ body {
 
 /* Sezione nascosta per i bottoni di caricamento/registrazione */
 .upload-record-buttons {
+    display: flex; /* Abilita il layout flessibile */
+    justify-content: center; /* Centra gli elementi orizzontalmente */
+    align-items: center; /* Centra gli elementi verticalmente */
+    flex-direction: row;
     opacity: 0; /* Nascondi inizialmente */
     transition: opacity 0.3s ease-in-out; /* Fai comparire gradualmente */
 }
@@ -224,7 +228,7 @@ h1{
     height: 20px; /* Altezza dello slider (modificabile in base al design) */
     width: 60px; /* Larghezza dello slider */
 }
-#h2 {
+#loadingText {
     color: white;
     /*mix-blend-mode: difference; this will change color of loading  text      */
     text-align: center;
@@ -290,6 +294,36 @@ h1{
     margin: 10px 0; /* Spaziatura tra i paragrafi */
     font-size: 18px; /* Dimensione del testo */
     line-height: 1.6; /* Spaziatura tra le righe */
+}
+
+
+.info-btn {
+  width: 20px; /* Dimensione del cerchio */
+  height: 20px; 
+  background-color: #007bff; /* Colore di sfondo */
+  color: white; /* Colore del testo (la "i") */
+  font-size: 20px; /* Dimensione del testo */
+  font-weight: bold; /* Per rendere la "i" più visibile */
+  border: none; /* Nessun bordo */
+  border-radius: 50%; /* Rende il pulsante circolare */
+  display: flex; /* Per centrare il contenuto */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra orizzontalmente */
+  cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per un effetto 3D */
+  transition: transform 0.2s, box-shadow 0.2s; /* Aggiunge un effetto di animazione */
+}
+
+.info-btn:hover {
+  transform: scale(1.1); /* Ingigantisce leggermente il pulsante al passaggio del mouse */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Intensifica l'ombra */
+}
+
+.onset-algorythm {
+  display: flex; /* Imposta il layout in flexbox */
+  align-items: center; /* Centra gli elementi verticalmente */
+  justify-content: flex-start; /* Posiziona gli elementi a sinistra (puoi usare center per centrarli) */
+  gap: 10px; /* Spazio uniforme tra i pulsanti */
 }
 
 

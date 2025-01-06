@@ -18,22 +18,22 @@ export function getPeaks(data) {
     peaks.push(max); //aggiungo il picco massimo di una parte
   }
 
-  peaks.sort(function(a, b) {
+  peaks.sort(function (a, b) {
     return b.volume - a.volume; //ordino i picchi in ordine decrescente
   });
 
   peaks = peaks.splice(0, peaks.length * 0.5); //prendo solo la prima meta dei picchi (quelli piu alti)
-  peaks.sort(function(a, b) {
+  peaks.sort(function (a, b) {
     return a.position - b.position;
   });
 
   return peaks; //picchi piu alti ordinati per posizione
-} 
+}
 
-export function getIntervals(peaks){ //calcolo la distanza tra i picchi
+export function getIntervals(peaks) { //calcolo la distanza tra i picchi
   var groups = [];
 
-  peaks.forEach(function(peak, index) {
+  peaks.forEach(function (peak, index) {
     for (var i = 1; (index + i) < peaks.length && i < 10; i++) { //confronto un picco con i 10 successivi
       var group = {
         tempo: (60 * 44100) / (peaks[index + i].position - peak.position), //battiti che ci sono in un secondo * 60
@@ -56,10 +56,10 @@ export function getIntervals(peaks){ //calcolo la distanza tra i picchi
       for (let j = 0; j < groups.length; j++) {
         if (groups[j].tempo === group.tempo) {
           groups[j].count++;
-          groups[j].occurrences.push(peak.position, peaks[index + i].position); 
+          groups[j].occurrences.push(peak.position, peaks[index + i].position);
           found = true;
           break; // Interrompe l'iterazione appena trova una corrispondenza
-        }   
+        }
       }
 
       if (!found) {
@@ -68,13 +68,16 @@ export function getIntervals(peaks){ //calcolo la distanza tra i picchi
     }
   });
   return groups;
+
 }
+  
+
 
 export function getBpm(buffer) {
   const peaks = getPeaks([buffer.getChannelData(0), buffer.getChannelData(1)]);
   const groups = getIntervals(peaks);
 
-  var top = groups.sort(function(intA, intB) {
+  var top = groups.sort(function (intA, intB) {
     return intB.count - intA.count;
   }).splice(0, 5); //prendo i primi 5 gruppi con tempo piu frequente e li metto in array top
 
@@ -84,11 +87,12 @@ export function getBpm(buffer) {
 
 export function getClosestPeakToZero(groups) {
   if (!groups || groups.length === 0) {
-    throw new Error("No groups provided.");
+    alert("No groups provided.");
+    return -1;
   }
 
   // Trova il gruppo con il BPM più ricorrente
-  const mostFrequentGroup = groups.reduce((prev, curr) => 
+  const mostFrequentGroup = groups.reduce((prev, curr) =>
     (curr.count > prev.count ? curr : prev), groups[0]
   );
 

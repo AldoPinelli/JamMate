@@ -2,6 +2,8 @@ import * as BPM_detection from './BPM-detection.js';
 import * as Utility from './utility.js';
 import * as KEY_detection from './KEY-detection.js';
 import * as buffer_to_wav from './buffer_to_wav.js';
+import { drumTracks, bassTracks } from './track.js';
+
 
 
 
@@ -12,12 +14,31 @@ const startBtn = document.getElementById('startBtn');
 const actionButtons = document.getElementById('actionButtons');
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
+const keyButtons = document.querySelectorAll('.key-btn');
+const bpmInput = document.getElementById('select-bpm');
 let raw_wavesurfer = null;
 let bpm;
+let selectedBpm = 120;
+bpmInput.addEventListener('input', () => {
+    selectedBpm = parseInt(bpmInput.value);
+    console.log('BPM selezionato:', selectedBpm);
+});
+const elementsToRemove = [
+    'loadingContainer', 'loadingText', 'lol', 'resultContainer',
+    'bpmContainer', 'bpmText', 'info-bpm', 'keysContainer', 'keysText',
+    'info-keys', 'actionButton'
+];
+
+const metronomeURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/metronome.mp3";
+let metronome = new Tone.Player({
+    url: metronomeURL, // URL del suono del metronomo
+}).toDestination();
+
+
 let uploaded_file;
 let melodyAudioBuffer;
-const keyButtons = document.querySelectorAll('.key-btn');
-
+let cutPointBpm;
+let cutPointThreshold;
 startBtn.addEventListener('click', () => {
     // Sposta il contenitore verso l'alto
     container.style.transform = 'translateY(-20%)';
@@ -25,8 +46,18 @@ startBtn.addEventListener('click', () => {
     actionButtons.style.opacity = '1';
 });
 
+function clearElementsToRemove() {
+    elementsToRemove.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.remove();
+        }
+    });
+}
+
 //Caricamento file da locale
 uploadBtn.addEventListener('click', () => {
+    clearElementsToRemove();
     const validTypes = ['audio/wav', 'audio/x-wav', 'audio/mp3', 'audio/mpeg', 'audio/aiff', 'audio/x-aiff'];
     //creo un input di tipo file per accettare diversi formati audio
     const fileInput = document.createElement('input');
@@ -55,11 +86,14 @@ let mediaRecorder = null;
 let recordingChunks = [];
 let recordingInterval = null;
 let countdownInterval = null;
-let countdown = 3;
+let countdown = 8;
 let alreadyPressed = false;
 let detectedKeys;
 
+
 recordBtn.addEventListener('click', async () => {
+
+    clearElementsToRemove();
 
     if (mediaRecorder && mediaRecorder.state === 'recording') {
         // Stop alla registrazione
@@ -88,22 +122,31 @@ recordBtn.addEventListener('click', async () => {
     container.appendChild(countdownDisplay);
 
     countdownDisplay.style.display = 'block';
-    countdown = 3;
+    countdown = 8;
+    const scheduleId=Tone.Transport.scheduleRepeat((time) => {
+        if (countdown >= 0) {
+            // Aggiorna il display
+            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
 
-    countdownInterval = setInterval(() => {
-        countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
-        countdown--;
+            // Suona il click del metronomo
+            metronome.start(time);
 
-        if (countdown < 0) {
-            clearInterval(countdownInterval);
+            countdown--; // Decrementa il countdown
+        } else {
+            // Quando il countdown finisce, ferma la ripetizione
+            Tone.Transport.clear(scheduleId);
             countdownDisplay.style.display = 'none'; // Nascondi il countdown
             startRecording(); // Inizia la registrazione
         }
-    }, 1000);
+    }, (60 / selectedBpm), Tone.now());
+
+    // Avvia il trasporto
+    Tone.Transport.start();
 
 });
 
 async function startRecording() {
+    Tone.start();
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         let mimeType = "";
@@ -154,9 +197,13 @@ async function startRecording() {
         mediaRecorder.onstop = () => {
             //new Blob (parts=ovvero array contenente dati binari o testuali, options=oggetti per sepcificare tipo di file)
             const audioBlob = new Blob(recordingChunks, { type: mimeType });
-            console.log("Registrazione completata. File audio pronto per essere lazzarato: ", audioBlob);
-            uploaded_file = audioBlob;
-            renderWaveform(URL.createObjectURL(audioBlob));
+            if (audioBlob.size > 88000) {
+                console.log("Registrazione completata. File audio pronto per essere lazzarato: ", audioBlob);
+                uploaded_file = audioBlob;
+                renderWaveform(URL.createObjectURL(audioBlob));
+            } else {
+                alert("Registrazione troppo corta, riprova");
+            }
 
         };
 
@@ -223,10 +270,11 @@ function renderWaveform(audioURL) {
 
 
         const loadingContainer = document.createElement('div');
+        loadingContainer.id = 'loadingContainer';
         loadingContainer.className = 'div';
 
         const loadingText = document.createElement('p');
-        loadingText.id = 'h2';
+        loadingText.id = 'loadingText';
         loadingText.textContent = 'Detecting bpm and keys....';
 
         const spanElement = document.createElement('span');
@@ -257,42 +305,66 @@ function renderWaveform(audioURL) {
         //key detection
         const fftSize = 4096;
         const fft = new FFT(fftSize, audioContext.sampleRate);
+        console.log("fft : ", fft);
         const chromaData = KEY_detection.chroma(melodyAudioBuffer, fft, fftSize);
         var notes = KEY_detection.extractNotesFromChroma(chromaData);
         detectedKeys = KEY_detection.detectKey(notes);
         console.log("Tonalità trovate: ", detectedKeys);
 
         //troviamo il punto di taglio per la melodia
-        const cutPoint = BPM_detection.getClosestPeakToZero(groups);
-        console.log("Punto di taglio: ", cutPoint);
-
-        // Elimina la parte prima del cutPoint in melodyAudioBuffer
-        melodyAudioBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPoint, audioContext);
-        console.log("Buffer tagliato: ", melodyAudioBuffer);
+        cutPointBpm = BPM_detection.getClosestPeakToZero(groups);
+        console.log("Punto di taglio: ", cutPointBpm);
 
 
         setTimeout(() => {
 
             const resultContainer = document.createElement('div');
+            resultContainer.id = 'resultContainer';
             resultContainer.className = 'result-container';
-
+            //BPM
+            const bpmContainer = document.createElement('div');
+            bpmContainer.id = 'bpmContainer';
+            bpmContainer.style.display = 'flex';
+            bpmContainer.style.alignItems = 'center';
+            bpmContainer.style.justifyContent = 'center';
             const bpmText = document.createElement('p');
+            bpmText.id = 'bpmText';
             bpmText.textContent = `Detected Bpm: ${bpm}`;
-            resultContainer.appendChild(bpmText);
-
+            bpmText.style.marginRight = '10px'; // Aggiungi un po' di spazio tra il testo e il bottone
+            const infoBtn = document.createElement('button');
+            infoBtn.id = "info-bpm";
+            infoBtn.textContent = "i";
+            infoBtn.classList.add('info-btn');
+            bpmContainer.appendChild(bpmText);
+            bpmContainer.appendChild(infoBtn);
+            resultContainer.appendChild(bpmContainer);
+            //KEY
+            const keysContainer = document.createElement('div');
+            keysContainer.id = 'keysContainer';
+            keysContainer.style.display = 'flex';
+            keysContainer.style.alignItems = 'center';
+            keysContainer.style.justifyContent = 'center';
             const keysText = document.createElement('p');
+            keysText.id = 'keysText';
             keysText.textContent = `Detected possible Keys: ${detectedKeys.join(', ')}`;
-            resultContainer.appendChild(keysText);
+            keysText.style.marginRight = '10px'; // Aggiungi un po' di spazio tra il testo e il bottone
+            const infoKeysBtn = document.createElement('button');
+            infoKeysBtn.id = "info-keys";
+            infoKeysBtn.textContent = "i";
+            infoKeysBtn.classList.add('info-btn');
+            keysContainer.appendChild(keysText);
+            keysContainer.appendChild(infoKeysBtn);
+            resultContainer.appendChild(keysContainer);
 
             const actionButton = document.createElement('button');
+            actionButton.id = 'actionButton';
             actionButton.className = 'styled-button action-button';
             actionButton.textContent = 'Partiamo!';
 
-
             resultContainer.appendChild(actionButton);
 
-
             actionButton.addEventListener('click', () => {
+                raw_wavesurfer.stop();
                 container.style.display = 'none';
                 container2.style.display = 'flex';
                 keyButtons[0].textContent = detectedKeys[0];
@@ -337,36 +409,55 @@ const jamButton = document.getElementById('jam-button');
 const genreButtons = document.querySelectorAll('.genre-btn');
 const loopButtons = document.querySelectorAll('.loop-btn');
 const algorithmButtons = document.querySelectorAll('.algorithm-btn');
+const thresholdInput = document.getElementById('threshold');
+const changeOnsetBtn = document.getElementById('change-onset');
+
 
 let loopDuration;
 let loopDurationSamples;
-let selectedKey;
-let selectedGenres = [];
-let selectedLoopLength;
-let selectedAlgorithm;
 start_Btn = document.getElementById('start_Btn');
 stop_Btn = document.getElementById('stop_Btn');
 let melodyLoopBuffer;
 let drumLoopBuffer;
 let bassLoopBuffer;
+let threshold = 0.5;
+thresholdInput.addEventListener('input', () => {
+    threshold = parseFloat(thresholdInput.value);
+    console.log('Threshold value:', threshold);
+});
 const audioURL = "https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/drum_162bpm_24.mp3";
 const bassURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/theChicken-Bb.mp3";
-const metronomeURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/metronome.mp3";
 const container3 = document.querySelector('.container3');
+let jamMelodyBuffer;
 
 let melodyWave = configureWaveSurfer('#melodyWaveform', 'violet', 'purple');
 let drumWave = configureWaveSurfer('#drumWaveform', 'yellow', 'orange');
 let bassWave = configureWaveSurfer('#bassWaveform', 'blue', 'lightblue');
 
+let selectedKey;
+let selectedGenres = [];
+let selectedLoopLength;
+let selectedAlgorithm;
+
+let selectedUrls;
+let drumUrlCloud;
+let bassUrlCloud;
 
 
 
 //Bottoni
 backBtn.addEventListener('click', () => {
+    if (melodyTonePlayer.state === 'started') {
+        melodyTonePlayer.stop();
+        drumTonePlayer.stop();
+        bassTonePlayer.stop();
+    }
     container2.style.display = 'none';  // Nascondi il secondo contenitore
     container.style.display = 'block'; // Mostra il primo contenitore
     container3.style.display = 'none'; // Nascondi il terzo contenitore
     container.style.display = 'flex'; // Mostra il primo contenitore
+    document.querySelector('.controls').style.display = 'none';
+
 
     const resultContainer = document.querySelector('.result-container');
     const loadingContainer = document.querySelector('.div');
@@ -406,6 +497,7 @@ keyButtons.forEach(button => {
         console.log('Chiave selezionata:', selectedKey);
     });
 });
+
 
 algorithmButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -457,13 +549,9 @@ bassTonePlayer.volume.value = Tone.gainToDb(1 / 2);
 
 
 
-let metronome = new Tone.Player({
-    url: metronomeURL, // URL del suono del metronomo
-}).toDestination();
-
 //  JAM BUTTON
 jamButton.addEventListener('click', async () => {
-    if (selectedGenres.length === 0 || !selectedLoopLength || !selectedKey) {
+    if (selectedGenres.length === 0 || !selectedLoopLength || !selectedKey || !selectedAlgorithm) {
         alert('Seleziona almeno un genere, una lunghezza del loop e una chiave.');
         return;
     }
@@ -473,8 +561,38 @@ jamButton.addEventListener('click', async () => {
     console.log('Generi selezionati:', selectedGenres);
     console.log('Lunghezza del loop selezionata:', selectedLoopLength);
 
+    //logica di estrazione dei dati dal database
+    selectedUrls = await Utility.selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks);
+    console.log('URL selezionati:', selectedUrls);
+    drumUrlCloud = selectedUrls[0];
+    bassUrlCloud = selectedUrls[1];
+    console.log('URL batteria:', drumUrlCloud);
+    console.log('URL basso:', bassUrlCloud);
+
+    switch (selectedAlgorithm) {
+        case 'A':
+            // Implementazione dell'algoritmo 1
+            jamMelodyBuffer = melodyAudioBuffer;
+            console.log('Algoritmo A selezionato');
+            break;
+        case 'B':
+            // Implementazione dell'algoritmo 2
+            cutPointThreshold = Utility.findTheFirstEnergyPeak(melodyAudioBuffer, threshold);
+            jamMelodyBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPointThreshold, audioContext);
+            console.log('Algoritmo B selezionato');
+            break;
+        case 'C':
+            jamMelodyBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPointBpm, audioContext);
+            console.log("Buffer tagliato: ", melodyAudioBuffer);
+            console.log('Algoritmo C selezionato');
+            break;
+        default:
+            console.error('Algoritmo non riconosciuto');
+            break;
+    }
+
     //CREAZIONE MELODIA LOOP
-    melodyLoopBuffer = await Utility.createJamLoop(melodyAudioBuffer, bpm, selectedLoopLength, audioContext);
+    melodyLoopBuffer = await Utility.createJamLoop(jamMelodyBuffer, bpm, selectedLoopLength, audioContext);
     console.log("Loop creato: ", melodyLoopBuffer);
     melodyTonePlayer.buffer = melodyLoopBuffer;
     console.log("Melody Tone Player: ", melodyLoopBuffer.length);
@@ -485,7 +603,8 @@ jamButton.addEventListener('click', async () => {
     /*drumLoopBuffer = await Utility.createDrumLoop(audioURL, 78, bpm, audioContext, selectedLoopLength);
     drumTonePlayer.buffer = drumLoopBuffer;
     console.log("Drum Tone Player: ", drumLoopBuffer.length);*/
-    drumLoopBuffer = await Utility.fetchAudioBuffer(audioURL, audioContext);
+
+    drumLoopBuffer = await Utility.fetchAudioBuffer(drumUrlCloud, audioContext);
     drumLoopBuffer = await Utility.cutAudioBuffer(drumLoopBuffer, selectedLoopLength, audioContext);
     drumLoopBuffer = await Utility.timeStretchingWithoutPitchChange(drumLoopBuffer, loopDurationSamples, audioContext);
     drumTonePlayer.buffer = drumLoopBuffer;
@@ -493,13 +612,11 @@ jamButton.addEventListener('click', async () => {
 
 
     //CREAZIONE BASS LOOP
-    bassLoopBuffer = await Utility.fetchAudioBuffer(bassURL, audioContext);
-    bassLoopBuffer = await Utility.cutAudioBuffer(bassLoopBuffer,selectedLoopLength, audioContext);
+    bassLoopBuffer = await Utility.fetchAudioBuffer(bassUrlCloud, audioContext);
+    bassLoopBuffer = await Utility.cutAudioBuffer(bassLoopBuffer, selectedLoopLength, audioContext);
     bassLoopBuffer = await Utility.timeStretchingWithoutPitchChange(bassLoopBuffer, loopDurationSamples, audioContext);
     bassTonePlayer.buffer = bassLoopBuffer;
     console.log("Bass Tone Player: ", bassLoopBuffer.length);
-
-    
 
 
 
@@ -544,7 +661,7 @@ start_Btn.addEventListener('click', () => {
     if (loopStatus) {
         return;
     }
-    startTime = audioContext.currentTime + 0.1;
+    startTime = audioContext.currentTime + 0.5;
 
     // Gestione tone player
     melodyTonePlayer.start(startTime);
@@ -583,9 +700,6 @@ stop_Btn.addEventListener('click', () => {
     clearInterval(loopInterval.id); // Ferma l'intervallo
     loopStatus = false;
 });
-
-
-
 
 //GESTIONE EFFETTI
 document.querySelectorAll('.slider').forEach(slider => {
