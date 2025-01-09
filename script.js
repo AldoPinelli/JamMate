@@ -14,9 +14,11 @@ const startBtn = document.getElementById('startBtn');
 const actionButtons = document.getElementById('actionButtons');
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
+const bpmInfoContainer = document.getElementById('bpmInfoContainer');
 const keyButtons = document.querySelectorAll('.key-btn');
 const bpmInput = document.getElementById('select-bpm');
 const toggleBpm = document.getElementById('toggle-bpm');
+const backToMainBpm = document.getElementById('backToMainBpm');
 
 
 let raw_wavesurfer = null;
@@ -120,9 +122,6 @@ function stopMetronome() {
     Tone.Transport.stop();
     metronome.stop();
 }
-
-
-
 
 recordBtn.addEventListener('click', async () => {
 
@@ -259,7 +258,6 @@ function resetWaveform() {
         existingWaveContainer.remove();
     }
 }
-
 // Funzione per creare e caricare la waveform
 function renderWaveform(audioURL) {
     resetWaveform(); // Resetta la waveform precedente
@@ -398,6 +396,11 @@ function renderWaveform(audioURL) {
 
             resultContainer.appendChild(actionButton);
 
+            infoBtn.addEventListener('click', () => {
+                container.style.display = 'none';
+                bpmInfoContainer.style.display = 'flex';
+            });
+
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
                 container.style.display = 'none';
@@ -414,7 +417,6 @@ function renderWaveform(audioURL) {
 
     });
 }
-
 
 function configureWaveSurfer(containerId, waveColor, progressColor) {
     try {
@@ -434,6 +436,11 @@ function configureWaveSurfer(containerId, waveColor, progressColor) {
         return null;
     }
 }
+
+backToMainBpm.addEventListener('click', () => {
+    container.style.display = 'flex';
+    bpmInfoContainer.style.display = 'none';
+});
 
 
 

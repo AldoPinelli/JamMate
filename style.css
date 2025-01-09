@@ -328,4 +328,34 @@ h1{
 
 
 
+#bpmInfoContainer{
+    display:none;
+}
+
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.section img {
+    width: 40%;
+    max-width: 300px;
+    height: auto;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    width: 50%;
+}
+
+.infoContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
 
