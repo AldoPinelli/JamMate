@@ -513,16 +513,26 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
     'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
   };
 // logica di estrazione databse
-function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks) {
+function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks, bpm) {
   let selectedTrack;
+  console.log("Genre:", genre);
+  console.log("Key:", key);
+  console.log("Track Type:", trackType);
+  console.log("Drum Tracks:", drumTracks);
+  console.log("Bass Tracks:", bassTracks);
+  console.log("BPM:", bpm);
   if (trackType === 'drum') {
-    // Selezione casuale tra le tracce di batteria con il genere specificato
-    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
-    selectedTrack = genreTracks[Math.floor(Math.random() * genreTracks.length)].getUrl();
+    // Filtra le tracce di batteria con il genere specificato e il bpm <= quello passato
+    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase() && track.getBpm() <= bpm);
+    console.log("Genre Tracks:", genreTracks);
+    // Ordina per bpm decrescente e seleziona la prima traccia
+    selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0].getUrl();
   } else if (trackType === 'bass') {
-    // Selezione casuale di una traccia di basso con il genere specificato
-    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
-    selectedTrack = genreTracks[Math.floor(Math.random() * genreTracks.length)]; // Seleziona randomicamente una traccia di basso
+    // Filtra le tracce di basso con il genere specificato e il bpm <= quello passato
+    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase() && track.getBpm() <= bpm);
+    
+    // Ordina per bpm decrescente e seleziona la prima traccia
+    selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0]; // Seleziona la traccia con bpm più alto
 
     // Mappa la tonalità all'indice
     const keyIndex = keyMap[key]; // Mappa la tonalità alla sua posizione (0 - 11)
@@ -531,14 +541,15 @@ function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks)
   return selectedTrack;
 }
 
-export async function selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks) {
+
+export async function selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks, bpm) {
   let drumUrl, bassUrl;
 
   if (selectedGenres.length === 1) {
     // Se c'è solo un genere, seleziona le tracce con lo stesso genere per batteria e basso
     const genre = selectedGenres[0].toLowerCase();
-    drumUrl = selectTrackByGenreAndKey(genre, selectedKey, 'drum', drumTracks, bassTracks);
-    bassUrl = selectTrackByGenreAndKey(genre, selectedKey, 'bass', drumTracks, bassTracks);
+    drumUrl = selectTrackByGenreAndKey(genre, selectedKey, 'drum', drumTracks, bassTracks,bpm);
+    bassUrl = selectTrackByGenreAndKey(genre, selectedKey, 'bass', drumTracks, bassTracks,bpm);
   } else if (selectedGenres.length === 2) {
     // Se ci sono due generi, seleziona casualmente quale applicare a batteria e basso
     const genre1 = selectedGenres[0].toLowerCase();
@@ -547,11 +558,11 @@ export async function selectTracks(selectedGenres, selectedKey, drumTracks, bass
     // Pesca casualmente quale genere applicare alla batteria e quale al basso
     const isDrumGenreFirst = Math.random() > 0.5;
     if (isDrumGenreFirst) {
-      drumUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'drum');
-      bassUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'bass');
+      drumUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'drum', drumTracks, bassTracks,bpm);
+      bassUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'bass', drumTracks, bassTracks,bpm);
     } else {
-      drumUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'drum');
-      bassUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'bass');
+      drumUrl = selectTrackByGenreAndKey(genre2, selectedKey, 'drum', drumTracks, bassTracks,bpm);
+      bassUrl = selectTrackByGenreAndKey(genre1, selectedKey, 'bass', drumTracks, bassTracks,bpm);
     }
   }
   return [drumUrl, bassUrl];

@@ -16,6 +16,9 @@ const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
 const keyButtons = document.querySelectorAll('.key-btn');
 const bpmInput = document.getElementById('select-bpm');
+const toggleBpm = document.getElementById('toggle-bpm');
+
+
 let raw_wavesurfer = null;
 let bpm;
 let selectedBpm = 120;
@@ -34,6 +37,11 @@ let metronome = new Tone.Player({
     url: metronomeURL, // URL del suono del metronomo
 }).toDestination();
 
+let useBpm = false;
+toggleBpm.addEventListener('change', () => {
+    useBpm = toggleBpm.checked;
+    console.log('Use BPM:', useBpm);
+});
 
 let uploaded_file;
 let melodyAudioBuffer;
@@ -86,9 +94,34 @@ let mediaRecorder = null;
 let recordingChunks = [];
 let recordingInterval = null;
 let countdownInterval = null;
-let countdown = 8;
+let countdown = 7;
 let alreadyPressed = false;
 let detectedKeys;
+
+let metronomeStarted = false;
+
+function startMetronome(bpm) {
+    if (metronomeStarted) return; // Evita di avviare il metronomo se già avviato
+    metronomeStarted = true;
+
+    Tone.Transport.scheduleRepeat((time) => {
+        // Suona il click del metronomo
+        metronome.start(time);
+    }, (60 / bpm), Tone.now());
+
+    Tone.Transport.start();
+}
+
+function stopMetronome() {
+    if (!metronomeStarted) return; // Se il metronomo non è mai stato avviato, non fare nulla
+    metronomeStarted = false;
+
+    // Ferma il trasporto e il metronomo
+    Tone.Transport.stop();
+    metronome.stop();
+}
+
+
 
 
 recordBtn.addEventListener('click', async () => {
@@ -102,6 +135,7 @@ recordBtn.addEventListener('click', async () => {
         clearInterval(recordingInterval);
         timer.style.display = 'none';
         alreadyPressed = false;
+        stopMetronome();
         return;
     }
     if (alreadyPressed) {
@@ -122,23 +156,24 @@ recordBtn.addEventListener('click', async () => {
     container.appendChild(countdownDisplay);
 
     countdownDisplay.style.display = 'block';
-    countdown = 8;
-    const scheduleId=Tone.Transport.scheduleRepeat((time) => {
+    countdown = 7;
+    countdownInterval = setInterval(() => {
         if (countdown >= 0) {
+            if(countdown === 7){
+                if(useBpm){
+                startMetronome(selectedBpm);    
+                }
+            }
             // Aggiorna il display
-            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
-
-            // Suona il click del metronomo
-            metronome.start(time);
-
+            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`; 
             countdown--; // Decrementa il countdown
         } else {
             // Quando il countdown finisce, ferma la ripetizione
-            Tone.Transport.clear(scheduleId);
+            clearInterval(countdownInterval); // Ferma il countdown
             countdownDisplay.style.display = 'none'; // Nascondi il countdown
             startRecording(); // Inizia la registrazione
         }
-    }, (60 / selectedBpm), Tone.now());
+    }, (60/selectedBpm) * 1000); // Ogni 60/bpm secondi
 
     // Avvia il trasporto
     Tone.Transport.start();
@@ -562,7 +597,7 @@ jamButton.addEventListener('click', async () => {
     console.log('Lunghezza del loop selezionata:', selectedLoopLength);
 
     //logica di estrazione dei dati dal database
-    selectedUrls = await Utility.selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks);
+    selectedUrls = await Utility.selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks, bpm);
     console.log('URL selezionati:', selectedUrls);
     drumUrlCloud = selectedUrls[0];
     bassUrlCloud = selectedUrls[1];
