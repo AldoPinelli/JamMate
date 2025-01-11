@@ -151,6 +151,7 @@ body {
 }
 
 
+
 .genres, .loop-length {
     display: flex;
     flex-wrap: wrap;
@@ -296,7 +297,6 @@ h1{
     line-height: 1.6; /* Spaziatura tra le righe */
 }
 
-
 .info-btn {
   width: 20px; /* Dimensione del cerchio */
   height: 20px; 
@@ -326,36 +326,109 @@ h1{
   gap: 10px; /* Spazio uniforme tra i pulsanti */
 }
 
-
-
 #bpmInfoContainer{
-    display:none;
+    display: none;
+    grid-template-columns: 1fr 1fr; /* Due colonne di larghezza uguale */
+    grid-template-rows: auto 1fr 1fr; /* Tre righe: titolo + contenuti */
+}
+
+#keyInfoContainer{
+    display: none;
+    grid-template-columns: 1fr 1fr; /* Due colonne di larghezza uguale */
+    grid-template-rows: auto 1fr; /* La prima riga ha altezza automatica, la seconda prende tutto lo spazio rimanente */
+
+}
+
+/* Contenitore principale */
+.infoContainer {
+  display: grid;
+  gap: 20px; /* Spazi tra gli elementi */
+  position: relative;
+  max-width: 90%;
+  height: 90vh; /* Altezza contenuta all'interno dello schermo */
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  overflow: auto; /* Aggiunge uno scroll se necessario */
+}
+
+/* Pulsante "Torna Indietro" */
+.backBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+/* Titolo centrato nella prima riga */
+.titleInfo {
+  grid-column: 1 / 3; /* Occupa entrambe le colonne */
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+/* Paragrafi */
+.paragraph {
+  max-width: 90%; /* Imposta la larghezza massima */
+  font-size: 16px;
+  color: #1b1093;
+  line-height: 1.5;
+  text-align: left;
+  border: 1px solid #1b1093;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #fff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 
-.section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 100%;
-}
-.section img {
-    width: 40%;
-    max-width: 300px;
-    height: auto;
+
+.paragraph ul {
+  list-style-type: disc; /* Tipo di elenco (punti) */
+  margin: 0;
+  padding-left: 20px; /* Spazio prima dei punti */
+  color: inherit; /* Mantiene il colore del paragrafo */
 }
 
-ul {
-    list-style-type: none;
-    padding-left: 0;
-    width: 50%;
+.paragraph li {
+  margin-bottom: 5px; /* Spaziatura tra gli elementi */
+  line-height: 1.5; /* Altezza delle righe */
 }
 
-.infoContent{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
+/* Immagini */
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.image img {
+  max-width: 100%; /* Adatta l'immagine alla dimensione della colonna */
+  height: auto;
+  border: 1px solid #1b1093;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Posizionamento preciso delle immagini */
+.image:nth-of-type(2) {
+  grid-column: 2; /* Seconda colonna */
+  grid-row: 2; /* Seconda riga */
+}
+
+.image:nth-of-type(1) {
+  grid-column: 1; /* Prima colonna */
+  grid-row: 3; /* Terza riga */
+}
+
+.secondaryKeyContainer{
+    overflow-y: auto; /* Abilita lo scroll verticale */
+    overflow-x: hidden; /* Blocca lo scroll orizzontale */
+}

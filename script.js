@@ -15,10 +15,12 @@ const actionButtons = document.getElementById('actionButtons');
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
 const bpmInfoContainer = document.getElementById('bpmInfoContainer');
+const keyInfoContainer = document.getElementById('keyInfoContainer');
 const keyButtons = document.querySelectorAll('.key-btn');
 const bpmInput = document.getElementById('select-bpm');
 const toggleBpm = document.getElementById('toggle-bpm');
 const backToMainBpm = document.getElementById('backToMainBpm');
+const backToMainKey = document.getElementById('backToMainKey');
 
 
 let raw_wavesurfer = null;
@@ -398,7 +400,11 @@ function renderWaveform(audioURL) {
 
             infoBtn.addEventListener('click', () => {
                 container.style.display = 'none';
-                bpmInfoContainer.style.display = 'flex';
+                bpmInfoContainer.style.display = 'grid';
+            });
+            infoKeysBtn.addEventListener('click', () => {
+                container.style.display = 'none';
+                keyInfoContainer.style.display = 'grid';
             });
 
             actionButton.addEventListener('click', () => {
@@ -441,6 +447,12 @@ backToMainBpm.addEventListener('click', () => {
     container.style.display = 'flex';
     bpmInfoContainer.style.display = 'none';
 });
+
+backToMainKey.addEventListener('click', () => {
+    container.style.display = 'flex';
+    keyInfoContainer.style.display = 'none';
+});
+
 
 
 

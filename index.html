@@ -139,30 +139,111 @@
 </div>
 
 
-<div id="bpmInfoContainer" class= "infoContainer">
-    <button id="backToMainBpm" class="styled-button">Torna Indietro</button>
-    <div id="infoContent">
-        <div class="section">
-            <h2>BPM Detection</h2>
-            <ul>
-                <li>1. The algorithm receives an audio buffer containing the sound data.</li>
-                <li>2. It finds the peaks: The algorithm divides the audio into small "parts" and identifies volume peaks for each part.</li>
-                <li>3. For each peak, the algorithm calculates the interval between that peak and the nearest peaks.</li>
-            </ul>
-            <img src="images/bpm1.png" alt="Image for steps 1-3">
-        </div>
-
-        <div class="section">
-            <img src="images/bpm2.png" alt="Image for steps 4-5">
-            <ul>
-                <li>4. Each interval represents a potential beat of the song and is stored in a "group" object.</li>
-                <li>5. The final BPM is determined by selecting the group with the most frequent BPM value.</li>
-            </ul>
-        </div>
+<div id="bpmInfoContainer" class="infoContainer">
+    <button id="backToMainBpm" class="backBtn styled-button">Torna Indietro</button>
+    <h2 class="titleInfo">BPM Detection</h2>
+    <div class="paragraph">
+        <ul>
+            The algorithm receives an audio buffer containing the sound data.<br><br>
+            <li>It finds the peaks: The algorithm divides the audio into small "parts" and identifies volume peaks for each part.</li>
+            <li>For each peak, the algorithm calculates the interval between that peak and the nearest peaks.</li>
+        </ul>
+    </div>
+    <div class="image"><img src="images/bpm1.png" alt="Image"></div>
+    <div class="image"><img src="images/bpm2.png" alt="Image"></div>
+    <div class="paragraph">
+        <ul>
+            Each interval represents a potential beat of the song and is stored in an object called a "group," which stores:<br><br>
+            <li>The BPM calculated from the interval.</li>
+            <li>The occurrences of intervals with the same duration.</li>
+            <li>An array of the peaks that generated these intervals (this is used for a "type C" algorithm to identify the beat of the melody, which we will encounter later in jamMate).</li>
+            The final BPM is determined by selecting the group with the most frequent BPM value.
+        </ul>
     </div>
 </div>
     
+
+
+<div id="keyInfoContainer" class="infoContainer">
+  <button id="backToMainKey" class="backBtn styled-button">Torna Indietro</button>
+  <h2 class="titleInfo">
+    Key Detection<br><br>The key_detection algorithm is based on the chroma vector of the input audio, computed with the STFT. The frequency content is analyzed to determine the corresponding pitch class. By examining the occurrences of each pitch class, the key is determined using predefined ‘key profiles’.
+  </h2>
+  <div class="secondaryKeyContainer">
+    <div class="paragraph">
+      HOW TO GET THE NOTES OF A SONG:
+
+Chroma (audioBuffer, fft, fftSize):
+1.  Compute the STFT of the input audio buffer
+    (fs = 44.1k, N = 4096, Hop = 2048 )
+2.  Loop: for each window , 
+    -  spectrum = fft.spectrum  //obtain the magnitude spectrum
+                                
+    -  calculateChromaVector (spectrum)
+    -  chromaData.push (chromaVector)
+3.  return chromaData
+
+CalculateChromaVector (spectrum, sampleRate):
+1.  binsize = sampleRate / spectrum.length  // frequency resolution               
+                                                                   
+2.  Loop: for i from 0 to spectrum.length/2  
+    -  frequency = i * binSize
+
+    //calculation of the corresponding pitch class (C, …)
+    -  pitchclass = (12*(log2(frequency/440))+12+9))%12 
+
+    //magnitude corresponding to the frequency
+    -  chromaVector[pitchClass] += spectrum[i]   
+3.  return chromaVector  
+
+ExtractNotesFromChroma(chromaData):
+1.  forEach chromaVector in chromaData:
+
+    //index corresponding to the max value
+    -  max_index = math.max(chromavector)  
+2.  notes.push(noteNames [ max_index ] )
+3.  return notes // array containing the most relevant note for each window
     
+    </div>
+  </div>
+  <div class="secondaryKeyContainer">
+    <div class="paragraph">
+
+      ONCE WE HAVE THE NOTES, HOW CAN WE DETECT THE KEY?
+
+DetectKey(notes): 
+Inspired by Krumhansl-Schmuckler key-finding algorithm, based on ‘key profiles’. 
+A key profile is a vector of 12 values, representing the stability of the 12 pitch classes relative to a given key. 
+These key profiles were obtained from experiments by Krumhansl in which subjects were asked to rate how well each pitch class “fit with” a prior context representing a key (usually a scale). 
+A high value means that the corresponding pitch class was judged to fit well with a given key. 
+The algorithm works as follows:
+    </div>
+    <div class="image">
+      <img src="images/key1.png" alt="Image">
+    </div>
+    <div class="paragraph">
+      
+noteNames = [ C, C#, D, D#, E, F, F#, G, G#, A, A#, B ] 
+
+1. forEach note in notes :
+   - index = noteNames.indexOf(note)
+   - noteCounts[index]++ ;   //occurrences of each pitchClass of the whole audio signal
+2. Loop: for p from 0 to 11  // for each pitchClass
+   - Shift a dx di major profile e minor profile di p
+   - Prodotto scalare tra noteCounts e major profile //calcolo della somiglianza di due vettori 
+   - Prodotto scalare tra noteCounts e minor profile
+   - Se majorCorrelation > bestMajorCorrelation : 
+      a. bestMajorCorrelation = majorCorrelation
+      b. bestMajorKey = noteNames [i] + ‘Major’
+   - Se minorCorrelation > bestMinorCorrelation :
+      c. bestMinorCorrelation = minorCorrelation
+      d. bestMinorKey = noteNames [i] + ‘Minor’
+3. return detectedkeys.push(bestMajorKey, bestMinorKey)
+      
+    </div>
+  </div>
+</div>
+
 
     <!-- Collega il file JavaScript esterno -->
     <script src="https://unpkg.com/wavesurfer.js"></script>
