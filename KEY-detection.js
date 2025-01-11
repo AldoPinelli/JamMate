@@ -2,9 +2,10 @@ export function chroma(audioBuffer, fft, fftSize) {
   const sampleRate = audioBuffer.sampleRate;
   const channelData = audioBuffer.getChannelData(0); 
   const chromaData = [];
+  const hopSize = fftSize / 2;
 
-  for (let i = 0; i < channelData.length; i += fftSize) { 
-    let segment = channelData.slice(i, i + fftSize); // segmento di 2048 campioni
+  for (let i = 0; i < channelData.length; i += hopSize) { 
+    let segment = channelData.slice(i, i + fftSize); 
     if (segment.length < fftSize) {
         // Se il segmento è più piccolo di fftSize, riempio con zeri
         const paddedSegment = new Float32Array(fftSize);

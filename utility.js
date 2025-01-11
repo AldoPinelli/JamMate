@@ -549,7 +549,9 @@ export async function selectTracks(selectedGenres, selectedKey, drumTracks, bass
     // Se c'è solo un genere, seleziona le tracce con lo stesso genere per batteria e basso
     const genre = selectedGenres[0].toLowerCase();
     drumUrl = selectTrackByGenreAndKey(genre, selectedKey, 'drum', drumTracks, bassTracks,bpm);
+    console.log('Selected drum track:', drumUrl);
     bassUrl = selectTrackByGenreAndKey(genre, selectedKey, 'bass', drumTracks, bassTracks,bpm);
+    console.log('Selected bass track:', bassUrl);
   } else if (selectedGenres.length === 2) {
     // Se ci sono due generi, seleziona casualmente quale applicare a batteria e basso
     const genre1 = selectedGenres[0].toLowerCase();
