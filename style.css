@@ -1,357 +1,483 @@
 /* Impostupzioni generali del corpo della pagina */
 body {
-    margin: 0; /* Rimuove il margine di default */
-    font-family: Arial, sans-serif; /* Imposta il font */
-    display: flex; /* Abilita il layout flessibile */
-    flex-direction: column;
-    justify-content: center; /* Centra gli elementi orizzontalmente */
-    align-items: center; /* Centra gli elementi verticalmente */
-    height: 100vh; /* Altezza del viewport */
-    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Sfondo gradiente */
-    color: white; /* Colore del testo */
-    overflow: hidden;
+  margin: 0;
+  /* Rimuove il margine di default */
+  font-family: Arial, sans-serif;
+  /* Imposta il font */
+  display: flex;
+  /* Abilita il layout flessibile */
+  flex-direction: column;
+  justify-content: center;
+  /* Centra gli elementi orizzontalmente */
+  align-items: center;
+  /* Centra gli elementi verticalmente */
+  height: 100vh;
+  /* Altezza del viewport */
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  /* Sfondo gradiente */
+  color: white;
+  /* Colore del testo */
+  overflow: hidden;
 }
 
 /* Contenitore principale */
 .container {
-    text-align: center; /* Centra il testo */
-    transition: transform 1s ease-in-out; /* Aggiunge una transizione fluida allo spostamento */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: visible;
-    position: relative;
-    width: 100%;
-    height: 500px;
+  text-align: center;
+  /* Centra il testo */
+  transition: transform 1s ease-in-out;
+  /* Aggiunge una transizione fluida allo spostamento */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+  height: 500px;
 }
 
 /* Contenitore seconda interfaccia */
 .container2 {
-    position: fixed; /* Fissa il contenitore alla viewport */
-    top: 0; /* Allineamento alla parte superiore */
-    left: 0; /* Allineamento a sinistra */
-    width: 100%; /* Larghezza completa */
-    display: flex; /* Abilita il layout flexbox */
-    flex-direction: column; /* Posiziona gli elementi verticalmente */
-    justify-content: flex-start; /* Allinea gli elementi verso l'alto */
-    align-items: center; /* Centra gli elementi orizzontalmente */
+  position: fixed;
+  /* Fissa il contenitore alla viewport */
+  top: 0;
+  /* Allineamento alla parte superiore */
+  left: 0;
+  /* Allineamento a sinistra */
+  width: 100%;
+  /* Larghezza completa */
+  display: flex;
+  /* Abilita il layout flexbox */
+  flex-direction: column;
+  /* Posiziona gli elementi verticalmente */
+  justify-content: flex-start;
+  /* Allinea gli elementi verso l'alto */
+  align-items: center;
+  /* Centra gli elementi orizzontalmente */
 }
 
 .container3 {
-    position: relative; /* Fissa il contenitore alla viewport */
-    width: 100%; /* Larghezza completa */
-    height: auto;
-    display: none; /* Abilita il layout flexbox */
-    flex-direction: column; /* Posiziona gli elementi verticalmente */
-    justify-content: flex-start; /* Allinea gli elementi verso l'alto */
-    align-items: center; /* Centra gli elementi orizzontalmente */
-    margin-top: 10px;
+  position: relative;
+  /* Fissa il contenitore alla viewport */
+  width: 100%;
+  /* Larghezza completa */
+  height: auto;
+  display: none;
+  /* Abilita il layout flexbox */
+  flex-direction: column;
+  /* Posiziona gli elementi verticalmente */
+  justify-content: flex-start;
+  /* Allinea gli elementi verso l'alto */
+  align-items: center;
+  /* Centra gli elementi orizzontalmente */
+  margin-top: 10px;
 }
 
 .selection-row {
-    display: flex; /* Abilita il layout flessibile */
-    justify-content: center; /* Centra gli elementi orizzontalmente */
-    flex-direction: row;
-    align-items: center; /* Centra gli elementi verticalmente */
+  display: flex;
+  /* Abilita il layout flessibile */
+  justify-content: center;
+  /* Centra gli elementi orizzontalmente */
+  flex-direction: row;
+  align-items: center;
+  /* Centra gli elementi verticalmente */
 }
 
 .selection-container {
-    margin-left: 30px;
-    border: 2px solid orange;
-    border-radius: 10px;
-    padding: 10px;
+  margin-left: 30px;
+  border: 2px solid orange;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 /* Titolo della pagina */
 .title {
-    font-size: 2rem; /* Dimensione del font */
-    margin-bottom: 20px; /* Spaziatura inferiore */
+  font-size: 2rem;
+  /* Dimensione del font */
+  margin-bottom: 20px;
+  /* Spaziatura inferiore */
 }
 
 /* Stile del bottone iniziale */
 .start-button {
-    padding: 15px 30px; /* Spazi interni */
-    font-size: 1rem; /* Dimensione del font */
-    background-color: #ff8c00; /* Colore di sfondo */
-    color: white; /* Colore del testo */
-    border: none; /* Rimuove il bordo */
-    border-radius: 5px; /* Angoli arrotondati */
-    cursor: pointer; /* Cambia il cursore quando si passa sopra */
-    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+  padding: 15px 30px;
+  /* Spazi interni */
+  font-size: 1rem;
+  /* Dimensione del font */
+  background-color: #ff8c00;
+  /* Colore di sfondo */
+  color: white;
+  /* Colore del testo */
+  border: none;
+  /* Rimuove il bordo */
+  border-radius: 5px;
+  /* Angoli arrotondati */
+  cursor: pointer;
+  /* Cambia il cursore quando si passa sopra */
+  transition: background-color 0.3s ease;
+  /* Transizione del colore di sfondo */
 }
 
 /* Cambia il colore del bottone al passaggio del mouse */
 .start-button:hover {
-    background-color: #ff7700;
+  background-color: #ff7700;
 }
 
 /* Sezione nascosta per i bottoni di caricamento/registrazione */
 .upload-record-buttons {
-    display: flex; /* Abilita il layout flessibile */
-    justify-content: center; /* Centra gli elementi orizzontalmente */
-    align-items: center; /* Centra gli elementi verticalmente */
-    flex-direction: row;
-    opacity: 0; /* Nascondi inizialmente */
-    transition: opacity 0.3s ease-in-out; /* Fai comparire gradualmente */
+  display: flex;
+  /* Abilita il layout flessibile */
+  justify-content: center;
+  /* Centra gli elementi orizzontalmente */
+  align-items: center;
+  /* Centra gli elementi verticalmente */
+  flex-direction: row;
+  opacity: 0;
+  /* Nascondi inizialmente */
+  transition: opacity 0.3s ease-in-out;
+  /* Fai comparire gradualmente */
 }
 
 /* Bottoni di caricamento/registrazione */
 .upload-record-buttons button {
-    margin: 10px; /* Spaziatura tra i bottoni */
-    padding: 15px 25px; /* Spazi interni */
-    font-size: 1rem; /* Dimensione del font */
-    background-color: #008cba; /* Colore di sfondo */
-    color: white; /* Colore del testo */
-    border: none; /* Rimuove il bordo */
-    border-radius: 5px; /* Angoli arrotondati */
-    cursor: pointer; /* Cambia il cursore quando si passa sopra */
-    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
-    margin-top: 50px; /* Spaziatura superiore */
+  margin: 10px;
+  /* Spaziatura tra i bottoni */
+  padding: 15px 25px;
+  /* Spazi interni */
+  font-size: 1rem;
+  /* Dimensione del font */
+  background-color: #008cba;
+  /* Colore di sfondo */
+  color: white;
+  /* Colore del testo */
+  border: none;
+  /* Rimuove il bordo */
+  border-radius: 5px;
+  /* Angoli arrotondati */
+  cursor: pointer;
+  /* Cambia il cursore quando si passa sopra */
+  transition: background-color 0.3s ease;
+  /* Transizione del colore di sfondo */
+  margin-top: 50px;
+  /* Spaziatura superiore */
 }
 
 /* Cambia il colore dei bottoni al passaggio del mouse */
 .upload-record-buttons button:hover {
-    background-color: #007bb5;
+  background-color: #007bb5;
 }
 
 #waveContainer {
-    width: 100%; /* Occupa tutta la larghezza del contenitore padre */
+  width: 100%;
+  /* Occupa tutta la larghezza del contenitore padre */
 }
+
 /* Stile della waveform */
 #waveform {
-    height: 150px;
-    border-radius: 8px;
-    background-color: linear-gradient(135deg, #1e3c72, #2a5298);
+  height: 150px;
+  border-radius: 8px;
+  background-color: linear-gradient(135deg, #1e3c72, #2a5298);
 }
 
 /* Stile per il pulsante di riproduzione */
 .styled-button {
-    margin: 10px;
-    margin-top: 10px;
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #008cba;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+  margin: 10px;
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* Transizione del colore di sfondo */
 }
 
 .styled-button:hover {
-    background-color: #007bb5;
+  background-color: #007bb5;
 }
 
 
 #backBtn {
-    position: absolute;         /* Posizione assoluta rispetto al contenitore */
-    top: 20px;                 /* Distanza dal bordo superiore */
-    left: 20px;                /* Distanza dal bordo sinistro */
-    z-index: 10;               /* Assicurati che il pulsante sia sopra altri elementi */
+  position: absolute;
+  /* Posizione assoluta rispetto al contenitore */
+  top: 20px;
+  /* Distanza dal bordo superiore */
+  left: 20px;
+  /* Distanza dal bordo sinistro */
+  z-index: 10;
+  /* Assicurati che il pulsante sia sopra altri elementi */
 }
 
 
 
-.genres, .loop-length {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
+.genres,
+.loop-length {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 /* Pulsante selezionabile */
 .btn {
-    background-color: #1e1e1e;
-    color: #ffffff;
-    border: 2px solid #444;
-    padding: 8px 15px;
-    font-size: 11px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #444;
+  padding: 8px 15px;
+  font-size: 11px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* Effetto hover */
 .btn:hover {
-    background-color: #444;
+  background-color: #444;
 }
 
 /* Stato selezionato */
 .btn.selected {
-    background-color: #4CAF50;
-    color: #fff;
-    border-color: #4CAF50;
+  background-color: #4CAF50;
+  color: #fff;
+  border-color: #4CAF50;
 }
 
 
-h1{
-    margin: 10px 0; /* Riduce la distanza tra le righe */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 18px; /* Riduce la dimensione del titolo */
-    text-align: center;
+h1 {
+  margin: 10px 0;
+  /* Riduce la distanza tra le righe */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 18px;
+  /* Riduce la dimensione del titolo */
+  text-align: center;
 }
 
 .wavecontainer {
-    width: 90%;
-    height: 120px;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 20px;
+  width: 90%;
+  height: 120px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .waveform {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
 }
 
 .slidercontainer {
-    display: flex; /* Organizza i 3 oggetti */
-    flex-direction: column; /* Disposizione verticale */
-    align-items: center; /* Allinea al centro orizzontalmente */
-    justify-content: space-between; /* Spaziatura uniforme tra gli oggetti */
-    height: 100%; /* Stessa altezza del wavecontainer */
-    box-sizing: border-box; /* Include padding e bordi nelle dimensioni */
+  display: flex;
+  /* Organizza i 3 oggetti */
+  flex-direction: column;
+  /* Disposizione verticale */
+  align-items: center;
+  /* Allinea al centro orizzontalmente */
+  justify-content: space-between;
+  /* Spaziatura uniforme tra gli oggetti */
+  height: 100%;
+  /* Stessa altezza del wavecontainer */
+  box-sizing: border-box;
+  /* Include padding e bordi nelle dimensioni */
 }
 
-.label, .number {
-    text-align: center; /* Allinea il testo al centro */
-    font-size: 12px; /* Regola la dimensione del testo */
-    white-space: nowrap; /* Evita che il testo vada a capo */
+.label,
+.number {
+  text-align: center;
+  /* Allinea il testo al centro */
+  font-size: 12px;
+  /* Regola la dimensione del testo */
+  white-space: nowrap;
+  /* Evita che il testo vada a capo */
 }
 
 .slider {
-    transform: rotate(270deg); /* Rotazione dello slider per la disposizione verticale */
-    height: 20px; /* Altezza dello slider (modificabile in base al design) */
-    width: 60px; /* Larghezza dello slider */
+  transform: rotate(270deg);
+  /* Rotazione dello slider per la disposizione verticale */
+  height: 20px;
+  /* Altezza dello slider (modificabile in base al design) */
+  width: 60px;
+  /* Larghezza dello slider */
 }
+
 #loadingText {
-    color: white;
-    /*mix-blend-mode: difference; this will change color of loading  text      */
-    text-align: center;
-    margin: 0;
-    font-size: 12px;
-    line-height: 30px;
-    font-family: Arial, Helvetica, sans-serif;
-    text-shadow: 0 0 3px;
-    padding: 0;
-    letter-spacing: 5px;
-  }
-  
-  .div {
-    position: relative;
-    top: 0px;
-    left: 0%;
-    max-width: 300px; /* Use viewport width for responsive width */
-    width: 100%;
-    height: 30px;
-    background: linear-gradient(to right, violet, purple);
-    background-size: 200% 100%;
-    /*animation-delay: 2s; */
-    border-radius: 10px;
-    box-shadow: 0 0 3px;
-    animation: gradientAnimation 6s linear forwards reverse;
-    margin-top: 40px;
-  }
-  
-  @keyframes gradientAnimation {
-    0% {
-      background-position: 0;
-    }
-  
-    100% {
-      background-position: 200% 0;
-    }
-  }
-  
-  /* Use media queries for responsiveness */
-  @media (max-width: 768px) {
-    .div {
-      width: 500px; /* Adjust width for smaller screens */
-      left: 10%;
-    }
+  color: white;
+  /*mix-blend-mode: difference; this will change color of loading  text      */
+  text-align: center;
+  margin: 0;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 0 0 3px;
+  padding: 0;
+  letter-spacing: 5px;
+}
+
+
+.div {
+  position: relative;
+  top: 0px;
+  left: 0%;
+  max-width: 300px;
+  width: 100%;
+  height: 30px;
+  background: violet;
+  /* Colore iniziale */
+  background-size: 200% 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 3px;
+  margin-top: 40px;
+}
+
+/* Classe che contiene l'animazione */
+.animated {
+  animation: gradientAnimation 6s linear forwards;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0;
   }
 
+  100% {
+    background-position: 200% 0;
+    background: purple;
+    /* Colore finale */
+  }
+}
+
+
+/* Use media queries for responsiveness */
+@media (max-width: 768px) {
+  .div {
+    width: 500px;
+    /* Adjust width for smaller screens */
+    left: 10%;
+  }
+}
+
 .result-container {
-    margin-top: 30px; /* Spazio rispetto all'elemento superiore */
-    padding: 20px; /* Spaziatura interna */
-    background: linear-gradient(135deg, rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8)); /* Sfondo trasparente con gradiente */
-    border-radius: 10px; /* Angoli arrotondati */
-    text-align: center; /* Testo centrato */
-    color: white; /* Colore del testo */
-    font-family: Arial, Helvetica, sans-serif; /* Font coerente */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Ombra per far risaltare */
-    width: 90%; /* Adatta la larghezza per dispositivi diversi */
-    max-width: 600px; /* Limita la larghezza massima */
-    opacity: 0.95; /* Leggera trasparenza */
-    transition: all 0.3s ease-in-out; /* Animazione per un effetto fluido */
+  margin-top: 30px;
+  /* Spazio rispetto all'elemento superiore */
+  padding: 20px;
+  /* Spaziatura interna */
+  background: linear-gradient(135deg, rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8));
+  /* Sfondo trasparente con gradiente */
+  border-radius: 10px;
+  /* Angoli arrotondati */
+  text-align: center;
+  /* Testo centrato */
+  color: white;
+  /* Colore del testo */
+  font-family: Arial, Helvetica, sans-serif;
+  /* Font coerente */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  /* Ombra per far risaltare */
+  width: 90%;
+  /* Adatta la larghezza per dispositivi diversi */
+  max-width: 600px;
+  /* Limita la larghezza massima */
+  opacity: 0.95;
+  /* Leggera trasparenza */
+  transition: all 0.3s ease-in-out;
+  /* Animazione per un effetto fluido */
 }
 
 .result-container p {
-    margin: 10px 0; /* Spaziatura tra i paragrafi */
-    font-size: 18px; /* Dimensione del testo */
-    line-height: 1.6; /* Spaziatura tra le righe */
+  margin: 10px 0;
+  /* Spaziatura tra i paragrafi */
+  font-size: 18px;
+  /* Dimensione del testo */
+  line-height: 1.6;
+  /* Spaziatura tra le righe */
 }
 
 .info-btn {
-  width: 20px; /* Dimensione del cerchio */
-  height: 20px; 
-  background-color: #007bff; /* Colore di sfondo */
-  color: white; /* Colore del testo (la "i") */
-  font-size: 20px; /* Dimensione del testo */
-  font-weight: bold; /* Per rendere la "i" più visibile */
-  border: none; /* Nessun bordo */
-  border-radius: 50%; /* Rende il pulsante circolare */
-  display: flex; /* Per centrare il contenuto */
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra orizzontalmente */
-  cursor: pointer; /* Cambia il cursore al passaggio del mouse */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per un effetto 3D */
-  transition: transform 0.2s, box-shadow 0.2s; /* Aggiunge un effetto di animazione */
+  width: 20px;
+  /* Dimensione del cerchio */
+  height: 20px;
+  background-color: #007bff;
+  /* Colore di sfondo */
+  color: white;
+  /* Colore del testo (la "i") */
+  font-size: 20px;
+  /* Dimensione del testo */
+  font-weight: bold;
+  /* Per rendere la "i" più visibile */
+  border: none;
+  /* Nessun bordo */
+  border-radius: 50%;
+  /* Rende il pulsante circolare */
+  display: flex;
+  /* Per centrare il contenuto */
+  align-items: center;
+  /* Centra verticalmente */
+  justify-content: center;
+  /* Centra orizzontalmente */
+  cursor: pointer;
+  /* Cambia il cursore al passaggio del mouse */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  /* Aggiunge un'ombra per un effetto 3D */
+  transition: transform 0.2s, box-shadow 0.2s;
+  /* Aggiunge un effetto di animazione */
 }
 
 .info-btn:hover {
-  transform: scale(1.1); /* Ingigantisce leggermente il pulsante al passaggio del mouse */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Intensifica l'ombra */
+  transform: scale(1.1);
+  /* Ingigantisce leggermente il pulsante al passaggio del mouse */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  /* Intensifica l'ombra */
 }
 
 .onset-algorythm {
-  display: flex; /* Imposta il layout in flexbox */
-  align-items: center; /* Centra gli elementi verticalmente */
-  justify-content: flex-start; /* Posiziona gli elementi a sinistra (puoi usare center per centrarli) */
-  gap: 10px; /* Spazio uniforme tra i pulsanti */
+  display: flex;
+  /* Imposta il layout in flexbox */
+  align-items: center;
+  /* Centra gli elementi verticalmente */
+  justify-content: flex-start;
+  /* Posiziona gli elementi a sinistra (puoi usare center per centrarli) */
+  gap: 10px;
+  /* Spazio uniforme tra i pulsanti */
 }
 
-#bpmInfoContainer{
-    display: none;
-    grid-template-columns: 1fr 1fr; /* Due colonne di larghezza uguale */
-    grid-template-rows: auto 1fr 1fr; /* Tre righe: titolo + contenuti */
+#bpmInfoContainer {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  /* Due colonne di larghezza uguale */
+  grid-template-rows: auto 1fr 1fr;
+  /* Tre righe: titolo + contenuti */
 }
 
-#keyInfoContainer{
-    display: none;
-    grid-template-columns: 1fr 1fr; /* Due colonne di larghezza uguale */
-    grid-template-rows: auto 1fr; /* La prima riga ha altezza automatica, la seconda prende tutto lo spazio rimanente */
+#keyInfoContainer {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  /* Due colonne di larghezza uguale */
+  grid-template-rows: auto 1fr;
+  /* La prima riga ha altezza automatica, la seconda prende tutto lo spazio rimanente */
 
 }
 
 /* Contenitore principale */
 .infoContainer {
   display: grid;
-  gap: 20px; /* Spazi tra gli elementi */
+  gap: 20px;
+  /* Spazi tra gli elementi */
   position: relative;
   max-width: 90%;
-  height: 90vh; /* Altezza contenuta all'interno dello schermo */
+  height: 90vh;
+  /* Altezza contenuta all'interno dello schermo */
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
-  overflow: auto; /* Aggiunge uno scroll se necessario */
+  overflow: auto;
+  /* Aggiunge uno scroll se necessario */
 }
 
 /* Pulsante "Torna Indietro" */
@@ -364,7 +490,8 @@ h1{
 
 /* Titolo centrato nella prima riga */
 .titleInfo {
-  grid-column: 1 / 3; /* Occupa entrambe le colonne */
+  grid-column: 1 / 3;
+  /* Occupa entrambe le colonne */
   text-align: center;
   font-size: 24px;
   font-weight: bold;
@@ -374,7 +501,8 @@ h1{
 
 /* Paragrafi */
 .paragraph {
-  max-width: 90%; /* Imposta la larghezza massima */
+  max-width: 90%;
+  /* Imposta la larghezza massima */
   font-size: 16px;
   color: #1b1093;
   line-height: 1.5;
@@ -391,15 +519,20 @@ h1{
 
 
 .paragraph ul {
-  list-style-type: disc; /* Tipo di elenco (punti) */
+  list-style-type: disc;
+  /* Tipo di elenco (punti) */
   margin: 0;
-  padding-left: 20px; /* Spazio prima dei punti */
-  color: inherit; /* Mantiene il colore del paragrafo */
+  padding-left: 20px;
+  /* Spazio prima dei punti */
+  color: inherit;
+  /* Mantiene il colore del paragrafo */
 }
 
 .paragraph li {
-  margin-bottom: 5px; /* Spaziatura tra gli elementi */
-  line-height: 1.5; /* Altezza delle righe */
+  margin-bottom: 5px;
+  /* Spaziatura tra gli elementi */
+  line-height: 1.5;
+  /* Altezza delle righe */
 }
 
 /* Immagini */
@@ -410,7 +543,8 @@ h1{
 }
 
 .image img {
-  max-width: 100%; /* Adatta l'immagine alla dimensione della colonna */
+  max-width: 100%;
+  /* Adatta l'immagine alla dimensione della colonna */
   height: auto;
   border: 1px solid #1b1093;
   border-radius: 5px;
@@ -419,16 +553,20 @@ h1{
 
 /* Posizionamento preciso delle immagini */
 .image:nth-of-type(2) {
-  grid-column: 2; /* Seconda colonna */
-  grid-row: 2; /* Seconda riga */
+  grid-column: 2;
+  /* Seconda colonna */
+  grid-row: 2;
+  /* Seconda riga */
 }
 
 .image:nth-of-type(1) {
-  grid-column: 1; /* Prima colonna */
-  grid-row: 3; /* Terza riga */
+  grid-column: 1;
+  /* Prima colonna */
+  grid-row: 3;
+  /* Terza riga */
 }
 
-.secondaryKeyContainer{
-    overflow-y: auto; /* Abilita lo scroll verticale */
-    overflow-x: hidden; /* Blocca lo scroll orizzontale */
+.secondaryKeyContainer {
+  overflow-y: auto;
+  /* Abilita lo scroll verticale */
 }

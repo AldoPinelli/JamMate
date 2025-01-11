@@ -216,7 +216,8 @@ Inspired by Krumhansl-Schmuckler key-finding algorithm, based on ‘key profiles
 A key profile is a vector of 12 values, representing the stability of the 12 pitch classes relative to a given key. 
 These key profiles were obtained from experiments by Krumhansl in which subjects were asked to rate how well each pitch class “fit with” a prior context representing a key (usually a scale). 
 A high value means that the corresponding pitch class was judged to fit well with a given key. 
-The algorithm works as follows:
+The image shows (for the C major and minor scale) how much weight each note has for key recognition.
+The algorithm works as follows: 
     </div>
     <div class="image">
       <img src="images/key1.png" alt="Image">
@@ -230,8 +231,8 @@ noteNames = [ C, C#, D, D#, E, F, F#, G, G#, A, A#, B ]
    - noteCounts[index]++ ;   //occurrences of each pitchClass of the whole audio signal
 2. Loop: for p from 0 to 11  // for each pitchClass
    - Shift a dx di major profile e minor profile di p
-   - Prodotto scalare tra noteCounts e major profile //calcolo della somiglianza di due vettori 
-   - Prodotto scalare tra noteCounts e minor profile
+- Dot product between noteCounts and major profile //calculation of the similarity of two vectors
+- Dot product between noteCounts and minor profile
    - Se majorCorrelation > bestMajorCorrelation : 
       a. bestMajorCorrelation = majorCorrelation
       b. bestMajorKey = noteNames [i] + ‘Major’

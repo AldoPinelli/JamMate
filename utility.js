@@ -529,11 +529,11 @@ function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks,
     selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0].getUrl();
   } else if (trackType === 'bass') {
     // Filtra le tracce di basso con il genere specificato e il bpm <= quello passato
-    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase() && track.getBpm() <= bpm);
-    
-    // Ordina per bpm decrescente e seleziona la prima traccia
-    selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0]; // Seleziona la traccia con bpm più alto
-
+    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
+    // Trova la traccia con il bpm più vicino a quello passato come parametro
+    selectedTrack = genreTracks.reduce((prev, curr) => {
+      return (Math.abs(curr.getBpm() - bpm) < Math.abs(prev.getBpm() - bpm) ? curr : prev);
+    });
     // Mappa la tonalità all'indice
     const keyIndex = keyMap[key]; // Mappa la tonalità alla sua posizione (0 - 11)
     selectedTrack = selectedTrack.getUrls()[keyIndex]; // Prendi la traccia corrispondente alla tonalità

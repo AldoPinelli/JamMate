@@ -160,13 +160,13 @@ recordBtn.addEventListener('click', async () => {
     countdown = 7;
     countdownInterval = setInterval(() => {
         if (countdown >= 0) {
-            if(countdown === 7){
-                if(useBpm){
-                startMetronome(selectedBpm);    
+            if (countdown === 7) {
+                if (useBpm) {
+                    startMetronome(selectedBpm);
                 }
             }
             // Aggiorna il display
-            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`; 
+            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
             countdown--; // Decrementa il countdown
         } else {
             // Quando il countdown finisce, ferma la ripetizione
@@ -174,7 +174,7 @@ recordBtn.addEventListener('click', async () => {
             countdownDisplay.style.display = 'none'; // Nascondi il countdown
             startRecording(); // Inizia la registrazione
         }
-    }, (60/selectedBpm) * 1000); // Ogni 60/bpm secondi
+    }, (60 / selectedBpm) * 1000); // Ogni 60/bpm secondi
 
     // Avvia il trasporto
     Tone.Transport.start();
@@ -318,6 +318,17 @@ function renderWaveform(audioURL) {
 
         loadingContainer.appendChild(loadingText);
         container.appendChild(loadingContainer);
+
+        setTimeout(() => {
+            loadingContainer.classList.add('animated');
+        }, 0);
+
+        // Quando l'animazione termina, rimuovi la classe animated
+        loadingContainer.addEventListener('animationend', () => {
+            loadingContainer.classList.remove('animated');
+            loadingContainer.style.background = 'purple'; // Colore finale
+        });
+
 
         //cambio sample rate della melodia caricata dall'utente
         melodyAudioBuffer = await Utility.loadBuffer(uploaded_file, audioContext);
