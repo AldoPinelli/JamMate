@@ -227,18 +227,18 @@ The algorithm works as follows:
 noteNames = [ C, C#, D, D#, E, F, F#, G, G#, A, A#, B ] 
 
 1. forEach note in notes :
-   - index = noteNames.indexOf(note)
-   - noteCounts[index]++ ;   //occurrences of each pitchClass of the whole audio signal
+    - index = noteNames.indexOf(note)
+    - noteCounts[index]++ ;   //occurrences of each pitchClass of the whole audio signal
 2. Loop: for p from 0 to 11  // for each pitchClass
-   - Shift a dx di major profile e minor profile di p
-- Dot product between noteCounts and major profile //calculation of the similarity of two vectors
-- Dot product between noteCounts and minor profile
-   - Se majorCorrelation > bestMajorCorrelation : 
-      a. bestMajorCorrelation = majorCorrelation
-      b. bestMajorKey = noteNames [i] + ‘Major’
-   - Se minorCorrelation > bestMinorCorrelation :
-      c. bestMinorCorrelation = minorCorrelation
-      d. bestMinorKey = noteNames [i] + ‘Minor’
+    - Shift right the major profile and minor profile by p
+    - Dot product between noteCounts and major profile //calculation of the similarity of two vectors
+    - Dot product between noteCounts and minor profile
+    - If majorCorrelation > bestMajorCorrelation : 
+        a. bestMajorCorrelation = majorCorrelation
+        b. bestMajorKey = noteNames [i] + ‘Major’
+    - If minorCorrelation > bestMinorCorrelation :
+        c. bestMinorCorrelation = minorCorrelation
+        d. bestMinorKey = noteNames [i] + ‘Minor’
 3. return detectedkeys.push(bestMajorKey, bestMinorKey)
       
     </div>
