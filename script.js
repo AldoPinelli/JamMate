@@ -425,6 +425,8 @@ function renderWaveform(audioURL) {
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
                 container.style.display = 'none' // Nasconde l'intero contenitore
+                resultContainer.remove();
+                loadingContainer.remove();
                 container2.style.display = 'flex';
                 keyButtons[0].textContent = detectedKeys[0];
                 keyButtons[1].textContent = detectedKeys[1];
@@ -528,13 +530,6 @@ backBtn.addEventListener('click', () => {
     container.style.display = 'flex'; // Mostra il primo contenitore
     document.querySelector('.controls').style.display = 'none';
 
-
-    const resultContainer = document.querySelector('.result-container');
-    const loadingContainer = document.querySelector('.div');
-    if (resultContainer && loadingContainer) {
-        resultContainer.remove();
-        loadingContainer.remove();
-    }
 });
 
 genreButtons.forEach(button => {
