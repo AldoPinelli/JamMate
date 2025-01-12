@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="http://unpkg.com/tone"></script>
-    <!-- Collega il file CSS esterno -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,16 +11,20 @@
 <body>
     <div class="container">
         <!-- Titolo della pagina -->
-        <div class="title">Sei pronto per Jammare con JamMate? Carica o registra la melodia che ti passa per la testa.</div>
-        <!-- Bottone per iniziare -->
-        <button class="start-button" id="startBtn">Iniziamo</button>
+        <div class="title">JamMate</div>
+
+        <div class="project-description">
+            Upload or record a melody you want to jam with.
+        </div>
+
         <!-- Sezione nascosta con bottoni per caricare o registrare un file -->
         <div class="upload-record-buttons" id="actionButtons">
-            <button id="uploadBtn">Carica un file audio</button>
+            <button id="uploadBtn">Upload melody</button>
             <div>
-                <button id="recordBtn">Registra la tua traccia dal microfono</button>
+                <button id="recordBtn">Record the melody</button>
+                <button id="stopBtn" style="display: none;">Stop</button>
                 <input type="checkbox" id="toggle-bpm" name="toggle-bpm">
-                <label for="bpm">usa BPM per registrare:</label>
+                <label for="bpm">Record with Metronome:</label>
                 <input type="number" id="select-bpm" name="bpm" min="70" max="180" value="120">
             </div>
         </div>

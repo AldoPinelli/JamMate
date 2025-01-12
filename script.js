@@ -11,6 +11,7 @@ const audioContext = new AudioContext({ sampleRate: 44100 });
 
 // Recupera il bottone iniziale, i bottoni di azione e il contenitore principale
 const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
 const actionButtons = document.getElementById('actionButtons');
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
@@ -51,12 +52,12 @@ let uploaded_file;
 let melodyAudioBuffer;
 let cutPointBpm;
 let cutPointThreshold;
-startBtn.addEventListener('click', () => {
+/*startBtn.addEventListener('click', () => {
     // Sposta il contenitore verso l'alto
     container.style.transform = 'translateY(-20%)';
     // Fai comparire gradualmente i bottoni di azione
     actionButtons.style.opacity = '1';
-});
+}); */
 
 function clearElementsToRemove() {
     elementsToRemove.forEach(id => {
@@ -129,16 +130,17 @@ recordBtn.addEventListener('click', async () => {
 
     clearElementsToRemove();
 
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        // Stop alla registrazione
-        mediaRecorder.stop();
-        clearInterval(countdownInterval);
-        clearInterval(recordingInterval);
-        timer.style.display = 'none';
-        alreadyPressed = false;
-        stopMetronome();
-        return;
-    }
+    stopBtn.addEventListener('click', () => {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop(); // Ferma la registrazione
+            clearInterval(countdownInterval);
+            clearInterval(recordingInterval);
+            timer.style.display = 'none';
+            alreadyPressed = false;
+            stopMetronome();
+            stopBtn.style.display = 'none';
+        }
+    });
     if (alreadyPressed) {
         console.log("stai provadn a fare il lazzarone");
         return;
@@ -218,6 +220,7 @@ async function startRecording() {
         }
 
         timer.style.display = 'block';
+        stopBtn.style.display = 'inline-block';
 
         // Mostra il timer
         let seconds = 0;
@@ -293,7 +296,7 @@ function renderWaveform(audioURL) {
 
     const analyzeBtn = document.createElement('button');
     analyzeBtn.id = "AnalyzeBtn";
-    analyzeBtn.textContent = "Analizza la traccia e partiamo!";
+    analyzeBtn.textContent = "Analyze the melody";
     analyzeBtn.classList.add('styled-button');
     waveContainer.appendChild(analyzeBtn);
 
@@ -405,7 +408,7 @@ function renderWaveform(audioURL) {
             const actionButton = document.createElement('button');
             actionButton.id = 'actionButton';
             actionButton.className = 'styled-button action-button';
-            actionButton.textContent = 'Partiamo!';
+            actionButton.textContent = 'Avanti';
 
             resultContainer.appendChild(actionButton);
 
@@ -418,17 +421,19 @@ function renderWaveform(audioURL) {
                 keyInfoContainer.style.display = 'grid';
             });
 
+
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
-                container.style.display = 'none';
+                container.style.display = 'none' // Nasconde l'intero contenitore
                 container2.style.display = 'flex';
                 keyButtons[0].textContent = detectedKeys[0];
                 keyButtons[1].textContent = detectedKeys[1];
                 keyButtons.forEach(btn => btn.classList.remove('selected'));
                 selectedKey = null;
             });
-
+            
             container.appendChild(resultContainer);
+            
 
         }, 100);
 
