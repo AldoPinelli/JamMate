@@ -131,6 +131,13 @@ body {
 
 }
 
+#bpmToggleBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
 
 /* container della pagina 1*/
 #waveContainer {
@@ -378,9 +385,9 @@ h1 {
 }
 
 .info-btn {
-  width: 20px;
+  width: 22px;
   /* Dimensione del cerchio */
-  height: 20px;
+  height: 22px;
   background-color: #007bff;
   /* Colore di sfondo */
   color: white;
@@ -405,6 +412,7 @@ h1 {
   /* Aggiunge un'ombra per un effetto 3D */
   transition: transform 0.2s, box-shadow 0.2s;
   /* Aggiunge un effetto di animazione */
+  line-height: 22px;
 }
 
 .info-btn:hover {

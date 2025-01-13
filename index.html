@@ -15,23 +15,24 @@
         <div class="title">JamMate</div>
 
         <div class="project-description">
-            Upload or record a melody you want to jam with, and we'll generate a bassline and drum track to complement it.
+            Upload or record a melody you want to jam with, and we'll generate a bassline and drum track to complement
+            it.
         </div>
 
         <!-- Sezione nascosta con bottoni per caricare o registrare un file -->
         <div id="actionButtons">
             <button id="uploadBtn" class="styled-button">Upload melody</button>
             <button id="randomMelody" class="styled-button">Try a random melody</button>
-            <div>
-                <button id="recordBtn" class="styled-button">Record the melody</button>
-                <div id="bpmToggleBox" style="display: none;">
-                    <input type="checkbox" id="toggle-bpm" name="toggle-bpm">
-                    <label for="bpm">Record with Metronome:</label>
-                    <input type="number" id="select-bpm" name="bpm" min="70" max="180" value="120">
-                </div>
-                <button id="stopBtn" class="recordBtn" style="display: none;">Stop</button>
-                <button id="startRecordBtn" class="recordBtn" style="display: none;">Start Recording</button>
+            <button id="recordBtn" class="styled-button">Record the melody</button>
+            <div id="bpmToggleBox" style="display: none;">
+                <input type="checkbox" id="toggle-bpm" name="toggle-bpm">
+                <label for="bpm">Record with Metronome:</label>
+                <input type="number" id="select-bpm" name="bpm" min="70" max="180" value="120">
+                <button id="infoRecord" class="info-btn" style="display: none;">i</button>
             </div>
+            <button id="stopBtn" class="recordBtn" style="display: none;">Stop</button>
+            <button id="startRecordBtn" class="recordBtn" style="display: none;">Start Recording</button>
+
         </div>
         <!-- Timer per la registrazione -->
 
@@ -50,6 +51,7 @@
                     <button class="btn genre-btn">Jazz</button>
                     <button class="btn genre-btn">Pop</button>
                     <button class="btn genre-btn">Funk</button>
+                    <button id="infoGenres" class="info-btn">i</button>
                 </div>
             </div>
             <!--</div>-->

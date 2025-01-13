@@ -29,11 +29,13 @@ const toggleBpm = document.getElementById('toggle-bpm');
 const backToMainBpm = document.getElementById('backToMainBpm');
 const backToMainKey = document.getElementById('backToMainKey');
 const backToMainOnset = document.getElementById('backToMainOnset');
+const infoRecordBtn = document.getElementById('infoRecord');
 
 
 let raw_wavesurfer = null;
 let bpm;
 let selectedBpm = 120;
+let lastSelectedBpm = null;
 
 bpmInput.addEventListener('input', () => {
     selectedBpm = parseInt(bpmInput.value);
@@ -61,6 +63,7 @@ let uploaded_file;
 let melodyAudioBuffer;
 let cutPointBpm;
 let cutPointThreshold;
+let useSelectedBpm = false;
 
 function clearElementsToRemove() {
     elementsToRemove.forEach(id => {
@@ -78,6 +81,7 @@ uploadBtn.addEventListener('click', () => {
     startRecordBtn.style.display = 'none';
     stopBtn.style.display = 'none';
     bpmToggleBox.style.display = 'none';
+    infoRecordBtn.style.display = 'none';
     const validTypes = ['audio/wav', 'audio/x-wav', 'audio/mp3', 'audio/mpeg', 'audio/aiff', 'audio/x-aiff'];
     //creo un input di tipo file per accettare diversi formati audio
     fileInput = document.createElement('input');
@@ -93,6 +97,7 @@ uploadBtn.addEventListener('click', () => {
             return;
         }
         console.log("File caricato e pronto per essere lazzarato: ", file);
+        useSelectedBpm = false;
         uploaded_file = file;
         renderWaveform(URL.createObjectURL(file));
     };
@@ -105,6 +110,7 @@ randomMelodyBtn.addEventListener('click', () => {
     startRecordBtn.style.display = 'none';
     stopBtn.style.display = 'none';
     bpmToggleBox.style.display = 'none';
+    infoRecordBtn.style.display = 'none';
     const randomIndex = Math.floor(Math.random() * availableMelodies.length);
     const randomMelodyUrl = availableMelodies[randomIndex];
     console.log('Random Melody URL:', randomMelodyUrl);
@@ -114,6 +120,7 @@ randomMelodyBtn.addEventListener('click', () => {
             uploaded_file = new File([blob], "randomMelody.mp3", { type: blob.type });
         })
         .catch(error => console.error('Errore durante il fetch della melodia casuale:', error));
+    useSelectedBpm = false;
     renderWaveform(randomMelodyUrl);
 });
 
@@ -175,20 +182,19 @@ function stopMetronome() {
     }
 }
 
-
 recordBtn.addEventListener('click', async () => {
 
     clearElementsToRemove();
     startRecordBtn.style.display = 'inline-block';
     bpmToggleBox.style.display = 'inline-block';
-    alreadyPressedRecordBtn = true;
+    infoRecordBtn.style.display = 'inline-block';
 
 });
 
 startRecordBtn.addEventListener('click', async () => {
     clearElementsToRemove();
-
-
+    uploadBtn.style.display = 'none';
+    randomMelodyBtn.style.display = 'none';
     if (alreadyPressed) {
         return;
     }
@@ -226,6 +232,13 @@ startRecordBtn.addEventListener('click', async () => {
             // Quando il countdown finisce, ferma la ripetizione
             clearInterval(countdownInterval); // Ferma il countdown
             countdownDisplay.style.display = 'none'; // Nascondi il countdown
+            if (useBpm === true) {
+                console.log("entrato: ", useBpm);
+                useSelectedBpm = true;
+                lastSelectedBpm = selectedBpm;
+            } else {
+                useSelectedBpm = false;
+            }
             startRecording(); // Inizia la registrazione
             startRecordBtn.style.display = 'none';
         }
@@ -247,6 +260,9 @@ stopBtn.addEventListener('click', () => {
         stopBtn.style.display = 'none';
         startRecordBtn.style.display = 'none';
         bpmToggleBox.style.display = 'none';
+        infoRecordBtn.style.display = 'none';
+        uploadBtn.style.display = 'block';
+        randomMelodyBtn.style.display = 'block';
     }
 });
 
@@ -306,6 +322,9 @@ async function startRecording() {
             if (audioBlob.size > 44000) {
                 console.log("Registrazione completata. File audio pronto per essere lazzarato: ", audioBlob);
                 uploaded_file = audioBlob;
+                if (useSelectedBpm === false) {
+                    useSelectedBpm = false;
+                }
                 renderWaveform(URL.createObjectURL(audioBlob));
             } else {
                 alert("Registrazione troppo corta, riprova");
@@ -369,6 +388,7 @@ function renderWaveform(audioURL) {
 
     analyzeBtn.addEventListener('click', async () => {
         clearElementsToRemove();
+        console.log("useSelectedbpm & lastSelectedBpm ", useSelectedBpm, lastSelectedBpm);
 
         const loadingContainer = document.createElement('div');
         loadingContainer.id = 'loadingContainer';
@@ -523,6 +543,9 @@ backToMainOnset.addEventListener('click', () => {
     onsetInfoContainer.style.display = 'none';
 });
 
+infoRecordBtn.addEventListener('click', () => {
+    alert("If you choose to record with BPM activated, the jam session will be based on the BPM you selected.")
+});
 
 
 
@@ -536,6 +559,7 @@ const algorithmButtons = document.querySelectorAll('.algorithm-btn');
 const thresholdInput = document.getElementById('threshold');
 const infoOnsetBtn = document.getElementById('info-onset');
 const controls = document.querySelector('.controls');
+const infoGenresBtn = document.getElementById('infoGenres');
 const start_Btn = document.getElementById('start_Btn');
 const stop_Btn = document.getElementById('stop_Btn');
 const container3 = document.querySelector('.container3');
@@ -587,6 +611,10 @@ backBtn.addEventListener('click', () => {
 
 });
 
+infoGenresBtn.addEventListener('click', () => {
+    alert("An accompaniment of the selected genre will accompany your melody. If you choose two genres, your melody will be accompanied by a mix of the two genres.");
+});
+
 genreButtons.forEach(button => {
     button.addEventListener('click', () => {
         if (button.classList.contains('selected')) {
@@ -614,7 +642,6 @@ keyButtons.forEach(button => {
         keyButtons.forEach(btn => btn.classList.remove('selected'));
         button.classList.add('selected');
         selectedKey = button.textContent.charAt(0);
-        console.log('Chiave selezionata:', selectedKey);
     });
 });
 
@@ -624,7 +651,6 @@ algorithmButtons.forEach(button => {
         algorithmButtons.forEach(btn => btn.classList.remove('selected'));
         button.classList.add('selected');
         selectedAlgorithm = button.textContent.split(' ')[1];
-        console.log('Algoritmo selezionato:', selectedAlgorithm);
     });
 });
 
@@ -680,6 +706,10 @@ jamButton.addEventListener('click', async () => {
         alert('Seleziona almeno un genere, una lunghezza del loop e una chiave.');
         return;
     }
+    if (useSelectedBpm) {
+        bpm = lastSelectedBpm;
+    }
+    console.log("bpm used for jam: ", bpm);
 
     const existingLoadingContainer2 = document.getElementById('loadingContainer2');
     if (existingLoadingContainer2) {
@@ -695,46 +725,36 @@ jamButton.addEventListener('click', async () => {
     // Creazione del testo di caricamento
     const loadingText = document.createElement('p');
     loadingText.className = 'loading-text';
-    loadingText.textContent = 'Generating drums and bass...'; 
+    loadingText.textContent = 'Generating drums and bass...';
     loadingContainer2.classList.add('animated');
     // Aggiunta del testo al contenitore di caricamento
     loadingContainer2.appendChild(loadingText);
     container2.appendChild(loadingContainer2);
-    
+
     setTimeout(() => {
         container3.style.display = "flex";
         controls.style.display = 'block';
     }, 2000);
 
 
-
-    console.log('Generi selezionati:', selectedGenres);
-    console.log('Lunghezza del loop selezionata:', selectedLoopLength);
-
     //logica di estrazione dei dati dal database
     selectedUrls = await Utility.selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks, bpm);
-    console.log('URL selezionati:', selectedUrls);
     drumUrlCloud = selectedUrls[0];
     bassUrlCloud = selectedUrls[1];
-    console.log('URL batteria:', drumUrlCloud);
-    console.log('URL basso:', bassUrlCloud);
 
     switch (selectedAlgorithm) {
         case 'A':
             // Implementazione dell'algoritmo 1
             jamMelodyBuffer = melodyAudioBuffer;
-            console.log('Algoritmo A selezionato');
             break;
         case 'B':
             // Implementazione dell'algoritmo 2
             cutPointThreshold = Utility.findTheFirstEnergyPeak(melodyAudioBuffer, threshold);
             jamMelodyBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPointThreshold, audioContext);
-            console.log('Algoritmo B selezionato');
             break;
         case 'C':
             jamMelodyBuffer = Utility.trimBuffer(melodyAudioBuffer, cutPointBpm, audioContext);
             console.log("Buffer tagliato: ", melodyAudioBuffer);
-            console.log('Algoritmo C selezionato');
             break;
         default:
             console.error('Algoritmo non riconosciuto');
@@ -743,7 +763,7 @@ jamButton.addEventListener('click', async () => {
 
     //CREAZIONE MELODIA LOOP
     melodyLoopBuffer = await Utility.createJamLoop(jamMelodyBuffer, bpm, selectedLoopLength, audioContext);
-    console.log("Loop creato: ", melodyLoopBuffer);
+    console.log("Melody Loop creato: ", melodyLoopBuffer);
     melodyTonePlayer.buffer = melodyLoopBuffer;
     console.log("Melody Tone Player: ", melodyLoopBuffer.length);
     loopDuration = melodyLoopBuffer.duration;

@@ -434,7 +434,6 @@ export async function timeStretchingWithoutPitchChange(audioBuffer, loopDuration
     processedBuffer.copyToChannel(stretchedDataLeft, 0);
     processedBuffer.copyToChannel(stretchedDataRight, 1);
 
-    console.log("lunghezza Buffer prima di troncamento o padding: ", processedBuffer.length);
     // Se la lunghezza del processedBuffer non è uguale a loopDurationSamples, tronca o aggiungi padding di zeri
     if (processedBuffer.length !== loopDurationSamples) {
       const adjustedBuffer = audioContext.createBuffer(
@@ -469,7 +468,6 @@ export async function timeStretchingWithoutPitchChange(audioBuffer, loopDuration
 }
 
 export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext) {
-  console.log("original bufferLenght: ", audioBuffer.length);
 
   if (loopLengthInBars === 16) {
     return audioBuffer;
@@ -485,7 +483,6 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
       const halfChannelData = halfBuffer.getChannelData(channel);
       halfChannelData.set(channelData.subarray(0, halfLength));
     }
-    console.log("half bufferLenght: ", halfBuffer.length);
     return halfBuffer;
 
   } else if (loopLengthInBars === 4) {
@@ -500,7 +497,6 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
       const quarterChannelData = quarterBuffer.getChannelData(channel);
       quarterChannelData.set(channelData.subarray(0, quarterLength));
     }
-    console.log("quarter bufferLenght: ", quarterBuffer.length);
     return quarterBuffer;
   } else {
 
@@ -515,12 +511,6 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
 // logica di estrazione databse
 function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks, bpm) {
   let selectedTrack;
-  console.log("Genre:", genre);
-  console.log("Key:", key);
-  console.log("Track Type:", trackType);
-  console.log("Drum Tracks:", drumTracks);
-  console.log("Bass Tracks:", bassTracks);
-  console.log("BPM:", bpm);
   if (trackType === 'drum') {
     // Filtra le tracce di batteria con il genere specificato e il bpm <= quello passato
     const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase() && track.getBpm() <= bpm);
