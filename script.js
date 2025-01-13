@@ -2,7 +2,7 @@ import * as BPM_detection from './BPM-detection.js';
 import * as Utility from './utility.js';
 import * as KEY_detection from './KEY-detection.js';
 import * as buffer_to_wav from './buffer_to_wav.js';
-import { drumTracks, bassTracks } from './track.js';
+import { drumTracks, bassTracks, availableMelodies } from './track.js';
 
 
 
@@ -10,9 +10,11 @@ import { drumTracks, bassTracks } from './track.js';
 const audioContext = new AudioContext({ sampleRate: 44100 });
 
 // Recupera il bottone iniziale, i bottoni di azione e il contenitore principale
-const startBtn = document.getElementById('startBtn');
+const startRecordBtn = document.getElementById('startRecordBtn');
 const stopBtn = document.getElementById('stopBtn');
+const bpmToggleBox = document.getElementById('bpmToggleBox');
 const actionButtons = document.getElementById('actionButtons');
+const randomMelodyBtn = document.getElementById('randomMelody');
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
 const bpmInfoContainer = document.getElementById('bpmInfoContainer');
@@ -74,6 +76,9 @@ function clearElementsToRemove() {
 let fileInput = null;
 uploadBtn.addEventListener('click', () => {
     clearElementsToRemove();
+    startRecordBtn.style.display = 'none';
+    stopBtn.style.display = 'none';
+    bpmToggleBox.style.display = 'none';
     const validTypes = ['audio/wav', 'audio/x-wav', 'audio/mp3', 'audio/mpeg', 'audio/aiff', 'audio/x-aiff'];
     //creo un input di tipo file per accettare diversi formati audio
     fileInput = document.createElement('input');
@@ -94,6 +99,25 @@ uploadBtn.addEventListener('click', () => {
 
 });
 
+randomMelodyBtn.addEventListener('click', () => {
+    clearElementsToRemove();
+    startRecordBtn.style.display = 'none';
+    stopBtn.style.display = 'none';
+    bpmToggleBox.style.display = 'none';
+    const randomIndex = Math.floor(Math.random() * availableMelodies.length);
+    const randomMelodyUrl = availableMelodies[randomIndex];
+    console.log('Random Melody URL:', randomMelodyUrl);
+    fetch(randomMelodyUrl)
+        .then(response => response.blob())
+        .then(blob => {
+            uploaded_file = new File([blob], "randomMelody.mp3", { type: blob.type });
+        })
+        .catch(error => console.error('Errore durante il fetch della melodia casuale:', error));
+    renderWaveform(randomMelodyUrl);
+});
+
+
+
 // 2. Registrazione audio
 // stiamo usando l'API MediaCapture and Streams per registrare l'audio
 // mediaRecorder è un oggetto che all'evento (ondataavailable) cattura i dati audio registrati e li salva in un array (recordingChunks)
@@ -107,43 +131,63 @@ let alreadyPressed = false;
 let detectedKeys;
 
 let metronomeStarted = false;
-
+let metronomeEventId = null; // ID per l'evento del metronomo
 function startMetronome(bpm) {
     if (metronomeStarted) return; // Evita di avviare il metronomo se già avviato
     metronomeStarted = true;
 
-    Tone.Transport.scheduleRepeat((time) => {
+    // Cancella eventuali eventi schedulati precedenti (se presenti)
+    if (metronomeEventId !== null) {
+        Tone.Transport.clear(metronomeEventId);
+    }
+
+    // Pianifica il metronomo e salva l'ID dell'evento
+    metronomeEventId = Tone.Transport.scheduleRepeat((time) => {
         // Suona il click del metronomo
         metronome.start(time);
-    }, (60 / bpm), Tone.now());
+    }, 60 / bpm); // Intervallo basato sul BPM
 
-    Tone.Transport.start();
+    // Avvia il trasporto (se non è già avviato)
+    if (!Tone.Transport.state || Tone.Transport.state === 'stopped') {
+        Tone.Transport.start();
+    }
 }
 
 function stopMetronome() {
     if (!metronomeStarted) return; // Se il metronomo non è mai stato avviato, non fare nulla
     metronomeStarted = false;
 
-    // Ferma il trasporto e il metronomo
-    Tone.Transport.stop();
-    metronome.stop();
+    // Ferma il click del metronomo
+    if (metronome) {
+        metronome.stop();
+    }
+
+    // Ferma il trasporto solo se non ci sono altri eventi attivi
+    if (Tone.Transport.state === 'started') {
+        Tone.Transport.stop();
+    }
+
+    // Cancella l'evento del metronomo
+    if (metronomeEventId !== null) {
+        Tone.Transport.clear(metronomeEventId);
+        metronomeEventId = null; // Resetta l'ID
+    }
 }
+
 
 recordBtn.addEventListener('click', async () => {
 
     clearElementsToRemove();
+    startRecordBtn.style.display = 'inline-block';
+    bpmToggleBox.style.display = 'inline-block';
+    alreadyPressedRecordBtn = true;
 
-    stopBtn.addEventListener('click', () => {
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop(); // Ferma la registrazione
-            clearInterval(countdownInterval);
-            clearInterval(recordingInterval);
-            timer.style.display = 'none';
-            alreadyPressed = false;
-            stopMetronome();
-            stopBtn.style.display = 'none';
-        }
-    });
+});
+
+startRecordBtn.addEventListener('click', async () => {
+    clearElementsToRemove();
+
+
     if (alreadyPressed) {
         console.log("stai provadn a fare il lazzarone");
         return;
@@ -163,27 +207,47 @@ recordBtn.addEventListener('click', async () => {
 
     countdownDisplay.style.display = 'block';
     countdown = 7;
+    let firstTimeInterval = true;
     countdownInterval = setInterval(() => {
         if (countdown >= 0) {
-            if (countdown === 7) {
-                if (useBpm) {
-                    startMetronome(selectedBpm);
-                }
-            }
             // Aggiorna il display
             countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
             countdown--; // Decrementa il countdown
+            if (firstTimeInterval === true) {
+                if (useBpm === true) {
+                    console.log("entrato useBpm: ", useBpm);
+                    startMetronome(selectedBpm);
+                }
+                console.log("entered");
+                firstTimeInterval = false;
+            }
+
         } else {
             // Quando il countdown finisce, ferma la ripetizione
             clearInterval(countdownInterval); // Ferma il countdown
             countdownDisplay.style.display = 'none'; // Nascondi il countdown
             startRecording(); // Inizia la registrazione
+            startRecordBtn.style.display = 'none';
         }
     }, (60 / selectedBpm) * 1000); // Ogni 60/bpm secondi
 
     // Avvia il trasporto
     Tone.Transport.start();
 
+});
+
+stopBtn.addEventListener('click', () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop(); // Ferma la registrazione
+        clearInterval(countdownInterval);
+        clearInterval(recordingInterval);
+        timer.style.display = 'none';
+        alreadyPressed = false;
+        stopMetronome();
+        stopBtn.style.display = 'none';
+        startRecordBtn.style.display = 'none';
+        bpmToggleBox.style.display = 'none';
+    }
 });
 
 async function startRecording() {
@@ -239,7 +303,7 @@ async function startRecording() {
         mediaRecorder.onstop = () => {
             //new Blob (parts=ovvero array contenente dati binari o testuali, options=oggetti per sepcificare tipo di file)
             const audioBlob = new Blob(recordingChunks, { type: mimeType });
-            if (audioBlob.size > 88000) {
+            if (audioBlob.size > 44000) {
                 console.log("Registrazione completata. File audio pronto per essere lazzarato: ", audioBlob);
                 uploaded_file = audioBlob;
                 renderWaveform(URL.createObjectURL(audioBlob));
@@ -429,9 +493,9 @@ function renderWaveform(audioURL) {
                 keyButtons.forEach(btn => btn.classList.remove('selected'));
                 selectedKey = null;
             });
-            
+
             container.appendChild(resultContainer);
-            
+
 
         }, 1500);
 

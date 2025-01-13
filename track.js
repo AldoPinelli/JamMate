@@ -137,4 +137,41 @@ export const bassTracks = [
         "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass1/bass_rap_B.mp3"
     ], 140, "rap"),
 
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_C_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_C%23_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_D_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_D%23_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_E_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_F_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_F%23_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_G_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_G%23_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_A_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_A%23_100.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass100/bass_rap_B_100.mp3",
+    ], 100, "rap"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_C_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_C%23_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_D_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_D%23_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_E_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_F_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_F%23_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_G_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_G%23_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_A_160.mp3", 
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_A%23_160.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_B_160.mp3"
+    ], 160, "rap"),
+
+
+
 ];
+
+export const availableMelodies = [
+    "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/piano_121_Am.mp3",
+    "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/trap_130_Em.mp3"
+]

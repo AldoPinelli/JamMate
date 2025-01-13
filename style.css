@@ -122,51 +122,17 @@ body {
   line-height: 1.6; /* Aumenta la distanza tra le righe per migliore leggibilità */
 }
 
-/* Sezione nascosta per i bottoni di caricamento/registrazione */
-.upload-record-buttons {
+
+
+#actionButtons{
   display: flex;
-  /* Abilita il layout flessibile */
   justify-content: center;
-  /* Centra gli elementi orizzontalmente */
-  align-items: center;
-  /* Centra gli elementi verticalmente */
-  flex-direction: row;
-  opacity: 1;
-  /* Nascondi inizialmente */
-  transition: opacity 0.3s ease-in-out;
-  margin-bottom: 20px;  
-  /* Fai comparire gradualmente */
+  margin-top: 30px;
+
 }
 
-/* Bottoni di caricamento/registrazione */
-.upload-record-buttons button {
-  margin: 10px;
-  /* Spaziatura tra i bottoni */
-  padding: 15px 25px;
-  /* Spazi interni */
-  font-size: 1rem;
-  /* Dimensione del font */
-  background-color: #008cba;
-  /* Colore di sfondo */
-  color: white;
-  /* Colore del testo */
-  border: none;
-  /* Rimuove il bordo */
-  border-radius: 5px;
-  /* Angoli arrotondati */
-  cursor: pointer;
-  /* Cambia il cursore quando si passa sopra */
-  transition: background-color 0.3s ease;
-  /* Transizione del colore di sfondo */
-  margin-top: 50px;
-  /* Spaziatura superiore */
-}
 
-/* Cambia il colore dei bottoni al passaggio del mouse */
-.upload-record-buttons button:hover {
-  background-color: #007bb5;
-}
-
+/* container della pagina 1*/
 #waveContainer {
   width: 100%;
   /* Occupa tutta la larghezza del contenitore padre */
@@ -177,6 +143,23 @@ body {
   height: 150px;
   border-radius: 8px;
   background-color: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+.recordBtn{
+  background-color: #cd2c16;
+  margin: 10px;
+  margin-top: 0;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recordBtn:hover{
+  background-color: #ea6553;
 }
 
 /* Stile per il pulsante di riproduzione */
@@ -197,7 +180,6 @@ body {
 .styled-button:hover {
   background-color: #007bb5;
 }
-
 
 #backBtn {
   position: absolute;
@@ -256,7 +238,7 @@ h1 {
 }
 
 .wavecontainer {
-  width: 90%;
+  width: 95%;
   height: 120px;
   display: flex;
   justify-content: flex-start;
@@ -268,8 +250,8 @@ h1 {
 .waveform {
   width: 100%;
   height: 100%;
-
-}
+  pointer-events: none; 
+  }
 
 .slidercontainer {
   display: flex;
@@ -557,4 +539,8 @@ h1 {
 .secondaryKeyContainer {
   overflow-y: auto;
   /* Abilita lo scroll verticale */
+}
+
+.vertical-text{
+  margin-right: 30px;
 }
