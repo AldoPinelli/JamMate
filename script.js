@@ -14,7 +14,6 @@ const audioContext = new AudioContext({ sampleRate: 44100 });
 const startRecordBtn = document.getElementById('startRecordBtn');
 const stopBtn = document.getElementById('stopBtn');
 const bpmToggleBox = document.getElementById('bpmToggleBox');
-const actionButtons = document.getElementById('actionButtons');
 const randomMelodyBtn = document.getElementById('randomMelody');
 
 
@@ -369,10 +368,6 @@ function renderWaveform(audioURL) {
     waveContainer.appendChild(analyzeBtn);
 
     analyzeBtn.addEventListener('click', async () => {
-        //container.style.display = 'none';  // Nascondi il primo contenitore
-        //container2.style.display = 'flex'; // Mostra il secondo contenitore
-        //const dynamicElements = document.querySelectorAll('#waveContainer, #countdownDisplay, #timer');
-        //dynamicElements.forEach(element => element.remove());
         clearElementsToRemove();
 
         const loadingContainer = document.createElement('div');
@@ -386,12 +381,6 @@ function renderWaveform(audioURL) {
         loadingContainer.appendChild(loadingText);
         container.appendChild(loadingContainer);
         loadingContainer.classList.add('animated');
-
-        // Quando l'animazione termina, rimuovi la classe animated
-        loadingContainer.addEventListener('animationend', () => {
-            loadingContainer.classList.remove('animated');
-            loadingContainer.style.background = 'purple'; // Colore finale
-        });
 
 
         //cambio sample rate della melodia caricata dall'utente
@@ -486,8 +475,6 @@ function renderWaveform(audioURL) {
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
                 container.style.display = 'none' // Nasconde l'intero contenitore
-                //resultContainer.remove();
-                //loadingContainer.remove();
                 container2.style.display = 'flex';
                 keyButtons[0].textContent = detectedKeys[0];
                 keyButtons[1].textContent = detectedKeys[1];
@@ -496,7 +483,6 @@ function renderWaveform(audioURL) {
             });
 
             container.appendChild(resultContainer);
-
 
         }, 1500);
 
@@ -550,12 +536,12 @@ const algorithmButtons = document.querySelectorAll('.algorithm-btn');
 const thresholdInput = document.getElementById('threshold');
 const infoOnsetBtn = document.getElementById('info-onset');
 const controls = document.querySelector('.controls');
-
+const start_Btn = document.getElementById('start_Btn');
+const stop_Btn = document.getElementById('stop_Btn');
+const container3 = document.querySelector('.container3');
 
 let loopDuration;
 let loopDurationSamples;
-start_Btn = document.getElementById('start_Btn');
-stop_Btn = document.getElementById('stop_Btn');
 let melodyLoopBuffer;
 let drumLoopBuffer;
 let bassLoopBuffer;
@@ -564,9 +550,7 @@ thresholdInput.addEventListener('input', () => {
     threshold = parseFloat(thresholdInput.value);
     console.log('Threshold value:', threshold);
 });
-const audioURL = "https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/drum_162bpm_24.mp3";
-const bassURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/theChicken-Bb.mp3";
-const container3 = document.querySelector('.container3');
+
 let jamMelodyBuffer;
 
 let melodyWave = configureWaveSurfer('#melodyWaveform', 'violet', 'purple');
@@ -822,7 +806,6 @@ jamButton.addEventListener('click', async () => {
 let startTime;
 let loopStatus = false;
 const loopInterval = { id: null };
-let intervalId
 start_Btn.addEventListener('click', () => {
     if (loopStatus) {
         return;
@@ -929,13 +912,3 @@ document.querySelectorAll('.slider').forEach(slider => {
         }
     });
 });
-
-
-
-
-
-
-
-
-
-
