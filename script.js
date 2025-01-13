@@ -392,7 +392,7 @@ function renderWaveform(audioURL) {
 
         const loadingContainer = document.createElement('div');
         loadingContainer.id = 'loadingContainer';
-        loadingContainer.className = 'div';
+        loadingContainer.className = 'bar';
 
         const loadingText = document.createElement('p');
         loadingText.className = 'loading-text';
@@ -720,7 +720,7 @@ jamButton.addEventListener('click', async () => {
     container3.style.display = 'none';
     const loadingContainer2 = document.createElement('div');
     loadingContainer2.id = 'loadingContainer2';
-    loadingContainer2.className = 'div';
+    loadingContainer2.className = 'bar';
 
     // Creazione del testo di caricamento
     const loadingText = document.createElement('p');
