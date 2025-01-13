@@ -17,11 +17,13 @@ const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
 const bpmInfoContainer = document.getElementById('bpmInfoContainer');
 const keyInfoContainer = document.getElementById('keyInfoContainer');
+const onsetInfoContainer = document.getElementById('onsetInfoContainer');
 const keyButtons = document.querySelectorAll('.key-btn');
 const bpmInput = document.getElementById('select-bpm');
 const toggleBpm = document.getElementById('toggle-bpm');
 const backToMainBpm = document.getElementById('backToMainBpm');
 const backToMainKey = document.getElementById('backToMainKey');
+const backToMainOnset = document.getElementById('backToMainOnset');
 
 
 let raw_wavesurfer = null;
@@ -69,11 +71,12 @@ function clearElementsToRemove() {
 }
 
 //Caricamento file da locale
+let fileInput = null;
 uploadBtn.addEventListener('click', () => {
     clearElementsToRemove();
     const validTypes = ['audio/wav', 'audio/x-wav', 'audio/mp3', 'audio/mpeg', 'audio/aiff', 'audio/x-aiff'];
     //creo un input di tipo file per accettare diversi formati audio
-    const fileInput = document.createElement('input');
+    fileInput = document.createElement('input');
     fileInput.type = 'file';
 
     //aggiungo un event listener per caricare il file audio
@@ -380,12 +383,12 @@ function renderWaveform(audioURL) {
             bpmText.id = 'bpmText';
             bpmText.textContent = `Detected Bpm: ${bpm}`;
             bpmText.style.marginRight = '10px'; // Aggiungi un po' di spazio tra il testo e il bottone
-            const infoBtn = document.createElement('button');
-            infoBtn.id = "info-bpm";
-            infoBtn.textContent = "i";
-            infoBtn.classList.add('info-btn');
+            const infoBpmBtn = document.createElement('button');
+            infoBpmBtn.id = "info-bpm";
+            infoBpmBtn.textContent = "i";
+            infoBpmBtn.classList.add('info-btn');
             bpmContainer.appendChild(bpmText);
-            bpmContainer.appendChild(infoBtn);
+            bpmContainer.appendChild(infoBpmBtn);
             resultContainer.appendChild(bpmContainer);
             //KEY
             const keysContainer = document.createElement('div');
@@ -412,7 +415,7 @@ function renderWaveform(audioURL) {
 
             resultContainer.appendChild(actionButton);
 
-            infoBtn.addEventListener('click', () => {
+            infoBpmBtn.addEventListener('click', () => {
                 container.style.display = 'none';
                 bpmInfoContainer.style.display = 'grid';
             });
@@ -425,8 +428,8 @@ function renderWaveform(audioURL) {
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
                 container.style.display = 'none' // Nasconde l'intero contenitore
-                resultContainer.remove();
-                loadingContainer.remove();
+                //resultContainer.remove();
+                //loadingContainer.remove();
                 container2.style.display = 'flex';
                 keyButtons[0].textContent = detectedKeys[0];
                 keyButtons[1].textContent = detectedKeys[1];
@@ -471,6 +474,11 @@ backToMainKey.addEventListener('click', () => {
     keyInfoContainer.style.display = 'none';
 });
 
+backToMainOnset.addEventListener('click', () => {
+    container2.style.display = 'flex';
+    onsetInfoContainer.style.display = 'none';
+});
+
 
 
 
@@ -482,7 +490,7 @@ const genreButtons = document.querySelectorAll('.genre-btn');
 const loopButtons = document.querySelectorAll('.loop-btn');
 const algorithmButtons = document.querySelectorAll('.algorithm-btn');
 const thresholdInput = document.getElementById('threshold');
-const changeOnsetBtn = document.getElementById('change-onset');
+const infoOnsetBtn = document.getElementById('info-onset');
 
 
 let loopDuration;
@@ -587,6 +595,11 @@ drumDelay.wet.value = 0;
 let bassDelay = new Tone.FeedbackDelay("8n", 0.3).connect(bassReverb);
 bassDelay.wet.value = 0;
 
+
+infoOnsetBtn.addEventListener('click', () => {
+    container2.style.display = 'none';
+    onsetInfoContainer.style.display = 'grid';
+});
 
 
 //Iizializzazione Tone Players

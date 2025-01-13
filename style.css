@@ -88,9 +88,15 @@ body {
   align-items: center;
   /* Centra gli elementi verticalmente */
 }
-
+.selectionBox{
+  width: 80%;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin-left:40px;
+}
 .selection-container {
-  margin-left: 30px;
+  margin-left: 2px;
   border: 2px solid orange;
   border-radius: 10px;
   padding: 10px;
@@ -206,12 +212,13 @@ body {
 }
 
 .genres,
-.loop-length {
+.loop-length, .keys, .onset-algorythm {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
   margin-bottom: 15px;
+  align-items: center;
 }
 
 /* Pulsante selezionabile */
@@ -428,32 +435,27 @@ h1 {
   /* Intensifica l'ombra */
 }
 
-.onset-algorythm {
-  display: flex;
-  /* Imposta il layout in flexbox */
-  align-items: center;
-  /* Centra gli elementi verticalmente */
-  justify-content: flex-start;
-  /* Posiziona gli elementi a sinistra (puoi usare center per centrarli) */
-  gap: 10px;
-  /* Spazio uniforme tra i pulsanti */
-}
 
 #bpmInfoContainer {
   display: none;
   grid-template-columns: 1fr 1fr;
   /* Due colonne di larghezza uguale */
-  grid-template-rows: auto 1fr 1fr;
+  grid-template-rows: auto auto 1fr;
   /* Tre righe: titolo + contenuti */
 }
 
 #keyInfoContainer {
   display: none;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   /* Due colonne di larghezza uguale */
   grid-template-rows: auto 1fr;
   /* La prima riga ha altezza automatica, la seconda prende tutto lo spazio rimanente */
+}
 
+#onsetInfoContainer{
+  display: none;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 /* Contenitore principale */
@@ -492,7 +494,6 @@ h1 {
   color: #333;
   margin: 0;
 }
-
 /* Paragrafi */
 .paragraph {
   max-width: 90%;
@@ -509,9 +510,11 @@ h1 {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
-
-
-
+.paragraph_onset{
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
 .paragraph ul {
   list-style-type: disc;
   /* Tipo di elenco (punti) */
@@ -521,21 +524,18 @@ h1 {
   color: inherit;
   /* Mantiene il colore del paragrafo */
 }
-
 .paragraph li {
   margin-bottom: 5px;
   /* Spaziatura tra gli elementi */
   line-height: 1.5;
   /* Altezza delle righe */
 }
-
 /* Immagini */
 .image {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .image img {
   max-width: 100%;
   /* Adatta l'immagine alla dimensione della colonna */
@@ -544,7 +544,6 @@ h1 {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 /* Posizionamento preciso delle immagini */
 .image:nth-of-type(2) {
   grid-column: 2;
@@ -552,14 +551,12 @@ h1 {
   grid-row: 2;
   /* Seconda riga */
 }
-
 .image:nth-of-type(1) {
   grid-column: 1;
   /* Prima colonna */
   grid-row: 3;
   /* Terza riga */
 }
-
 .secondaryKeyContainer {
   overflow-y: auto;
   /* Abilita lo scroll verticale */
