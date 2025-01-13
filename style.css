@@ -27,15 +27,15 @@ body {
   padding: 0;
   text-align: center;
   /* Centra il testo */
-  transition: transform 1s ease-in-out;
+  /*transition: transform 1s ease-in-out;
   /* Aggiunge una transizione fluida allo spostamento */
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: visible;
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .hidden {
@@ -60,6 +60,7 @@ body {
   /* Allinea gli elementi verso l'alto */
   align-items: center;
   /* Centra gli elementi orizzontalmente */
+  overflow-y: auto;
 }
 
 .container3 {
@@ -75,8 +76,6 @@ body {
   justify-content: flex-start;
   /* Allinea gli elementi verso l'alto */
   align-items: center;
-  /* Centra gli elementi orizzontalmente */
-  margin-top: 10px;
 }
 
 .selection-row {
