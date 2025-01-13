@@ -10,11 +10,15 @@ import { drumTracks, bassTracks, availableMelodies } from './track.js';
 const audioContext = new AudioContext({ sampleRate: 44100 });
 
 // Recupera il bottone iniziale, i bottoni di azione e il contenitore principale
+
 const startRecordBtn = document.getElementById('startRecordBtn');
 const stopBtn = document.getElementById('stopBtn');
 const bpmToggleBox = document.getElementById('bpmToggleBox');
 const actionButtons = document.getElementById('actionButtons');
 const randomMelodyBtn = document.getElementById('randomMelody');
+
+
+
 const container = document.querySelector('.container');
 const container2 = document.querySelector('.container2');
 const bpmInfoContainer = document.getElementById('bpmInfoContainer');
@@ -31,10 +35,12 @@ const backToMainOnset = document.getElementById('backToMainOnset');
 let raw_wavesurfer = null;
 let bpm;
 let selectedBpm = 120;
+
 bpmInput.addEventListener('input', () => {
     selectedBpm = parseInt(bpmInput.value);
     console.log('BPM selezionato:', selectedBpm);
 });
+
 const elementsToRemove = [
     'loadingContainer', 'loadingText', 'lol', 'resultContainer',
     'bpmContainer', 'bpmText', 'info-bpm', 'keysContainer', 'keysText',
@@ -56,12 +62,6 @@ let uploaded_file;
 let melodyAudioBuffer;
 let cutPointBpm;
 let cutPointThreshold;
-/*startBtn.addEventListener('click', () => {
-    // Sposta il contenitore verso l'alto
-    container.style.transform = 'translateY(-20%)';
-    // Fai comparire gradualmente i bottoni di azione
-    actionButtons.style.opacity = '1';
-}); */
 
 function clearElementsToRemove() {
     elementsToRemove.forEach(id => {
@@ -88,7 +88,9 @@ uploadBtn.addEventListener('click', () => {
     fileInput.onchange = () => {
         const file = fileInput.files[0];
         if (!validTypes.includes(file.type.toLowerCase())) {
-            console.error('Tipo di file non supportato. Seleziona un file WAV, MP3 o AIFF.');
+            const errorMessage = 'Tipo di file non supportato. Seleziona un file WAV, MP3 o AIFF.';
+            console.error(errorMessage);
+            alert(errorMessage);  // Mostra l'errore tramite un pop-up
             return;
         }
         console.log("File caricato e pronto per essere lazzarato: ", file);
@@ -189,7 +191,6 @@ startRecordBtn.addEventListener('click', async () => {
 
 
     if (alreadyPressed) {
-        console.log("stai provadn a fare il lazzarone");
         return;
     }
     try {
