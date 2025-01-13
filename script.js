@@ -308,26 +308,19 @@ function renderWaveform(audioURL) {
         //container2.style.display = 'flex'; // Mostra il secondo contenitore
         //const dynamicElements = document.querySelectorAll('#waveContainer, #countdownDisplay, #timer');
         //dynamicElements.forEach(element => element.remove());
-
+        clearElementsToRemove();
 
         const loadingContainer = document.createElement('div');
         loadingContainer.id = 'loadingContainer';
         loadingContainer.className = 'div';
 
         const loadingText = document.createElement('p');
-        loadingText.id = 'loadingText';
+        loadingText.className = 'loading-text';
         loadingText.textContent = 'Detecting bpm and keys....';
-
-        const spanElement = document.createElement('span');
-        spanElement.id = 'lol';
-        loadingText.appendChild(spanElement);
 
         loadingContainer.appendChild(loadingText);
         container.appendChild(loadingContainer);
-
-        setTimeout(() => {
-            loadingContainer.classList.add('animated');
-        }, 0);
+        loadingContainer.classList.add('animated');
 
         // Quando l'animazione termina, rimuovi la classe animated
         loadingContainer.addEventListener('animationend', () => {
@@ -369,7 +362,7 @@ function renderWaveform(audioURL) {
 
 
         setTimeout(() => {
-
+            loadingContainer.style.display = 'none';
             const resultContainer = document.createElement('div');
             resultContainer.id = 'resultContainer';
             resultContainer.className = 'result-container';
@@ -411,7 +404,7 @@ function renderWaveform(audioURL) {
             const actionButton = document.createElement('button');
             actionButton.id = 'actionButton';
             actionButton.className = 'styled-button action-button';
-            actionButton.textContent = 'Avanti';
+            actionButton.textContent = 'Next';
 
             resultContainer.appendChild(actionButton);
 
@@ -440,7 +433,7 @@ function renderWaveform(audioURL) {
             container.appendChild(resultContainer);
             
 
-        }, 100);
+        }, 1500);
 
     });
 }
@@ -491,6 +484,7 @@ const loopButtons = document.querySelectorAll('.loop-btn');
 const algorithmButtons = document.querySelectorAll('.algorithm-btn');
 const thresholdInput = document.getElementById('threshold');
 const infoOnsetBtn = document.getElementById('info-onset');
+const controls = document.querySelector('.controls');
 
 
 let loopDuration;
@@ -532,11 +526,15 @@ backBtn.addEventListener('click', () => {
         drumTonePlayer.stop();
         bassTonePlayer.stop();
     }
+    const existingLoadingContainer2 = document.getElementById('loadingContainer2');
+    if (existingLoadingContainer2) {
+        existingLoadingContainer2.remove();
+    }
     container2.style.display = 'none';  // Nascondi il secondo contenitore
     container.style.display = 'block'; // Mostra il primo contenitore
     container3.style.display = 'none'; // Nascondi il terzo contenitore
     container.style.display = 'flex'; // Mostra il primo contenitore
-    document.querySelector('.controls').style.display = 'none';
+    controls.style.display = 'none';
 
 });
 
@@ -634,8 +632,33 @@ jamButton.addEventListener('click', async () => {
         return;
     }
 
-    container3.style.display = 'flex';
-    document.querySelector('.controls').style.display = 'block';
+    const existingLoadingContainer2 = document.getElementById('loadingContainer2');
+    if (existingLoadingContainer2) {
+        existingLoadingContainer2.remove();
+    }
+    controls.style.display = 'none';
+
+    container3.style.display = 'none';
+    const loadingContainer2 = document.createElement('div');
+    loadingContainer2.id = 'loadingContainer2';
+    loadingContainer2.className = 'div';
+
+    // Creazione del testo di caricamento
+    const loadingText = document.createElement('p');
+    loadingText.className = 'loading-text';
+    loadingText.textContent = 'Generating drums and bass...'; 
+    loadingContainer2.classList.add('animated');
+    // Aggiunta del testo al contenitore di caricamento
+    loadingContainer2.appendChild(loadingText);
+    container2.appendChild(loadingContainer2);
+    
+    setTimeout(() => {
+        container3.style.display = "flex";
+        controls.style.display = 'block';
+    }, 2000);
+
+
+
     console.log('Generi selezionati:', selectedGenres);
     console.log('Lunghezza del loop selezionata:', selectedLoopLength);
 

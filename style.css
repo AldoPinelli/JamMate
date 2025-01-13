@@ -305,9 +305,9 @@ h1 {
   /* Larghezza dello slider */
 }
 
-#loadingText {
+.loading-text {
   color: white;
-  /*mix-blend-mode: difference; this will change color of loading  text      */
+  /*mix-blend-mode: difference; this will change color of loading text*/
   text-align: center;
   margin: 0;
   font-size: 12px;
@@ -331,26 +331,24 @@ h1 {
   background-size: 200% 100%;
   border-radius: 10px;
   box-shadow: 0 0 3px;
-  margin-top: 40px;
+  margin-top: 80px;
 }
 
-/* Classe che contiene l'animazione */
 .animated {
-  animation: gradientAnimation 6s linear forwards;
+  animation: gradientAnimation 1.5s linear forwards; /* Aggiungi l'animazione */
 }
 
 @keyframes gradientAnimation {
   0% {
-    background-position: 0;
+    background-position: 0 0;
+    background: violet; /* Colore iniziale */
   }
 
   100% {
-    background-position: 200% 0;
-    background: purple;
-    /* Colore finale */
+    background-position: 200% 0; /* Il gradiente si sposterà da sinistra a destra */
+    background: purple; /* Colore finale */
   }
 }
-
 
 /* Use media queries for responsiveness */
 @media (max-width: 768px) {
@@ -362,7 +360,7 @@ h1 {
 }
 
 .result-container {
-  margin-top: 30px;
+  margin-top: 60px;
   /* Spazio rispetto all'elemento superiore */
   padding: 20px;
   /* Spaziatura interna */
