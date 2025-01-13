@@ -182,25 +182,25 @@
         <button id="backToMainBpm" class="backBtn styled-button">Torna Indietro</button>
         <h2 class="titleInfo">BPM Detection</h2>
         <div class="paragraph">
-            The algorithm receives an audio buffer containing the sound data.
+The algorithm receives an audio buffer containing the sound data.
 
-            - It finds the peaks: The algorithm divides the audio into small "parts" and identifies volume peaks for
-            each part.
+- It finds the peaks: The algorithm divides the audio into small "parts" and identifies volume peaks for
+each part.
 
-            - For each peak, the algorithm calculates the interval between that peak and the nearest peaks.
+- For each peak, the algorithm calculates the interval between that peak and the nearest peaks.
         </div>
         <div class="image"><img src="images/bpm1.png" alt="Image"></div>
         <div class="image"><img src="images/bpm2.png" alt="Image"></div>
         <div class="paragraph">
-            Each interval represents a potential beat of the song and is stored in an object called a "group," which
-            stores:
+Each interval represents a potential beat of the song and is stored in an object called a "group," which
+stores:
 
-            - The BPM calculated from the interval.
-            - The occurrences of intervals with the same duration.
-            - An array of the peaks that generated these intervals (this is used for the "type C" algorithm to identify
-            the beat of the melody, which we will encounter later in jamMate).
+- The BPM calculated from the interval.
+- The occurrences of intervals with the same duration.
+- An array of the peaks that generated these intervals (this is used for the "type C" algorithm to identify
+the beat of the melody, which we will encounter later in jamMate).
 
-            The final BPM is determined by selecting the group with the most frequent BPM value.
+The final BPM is determined by selecting the group with the most frequent BPM value.
         </div>
     </div>
 
@@ -215,94 +215,94 @@
         </h2>
         <div class="secondaryKeyContainer">
             <div class="paragraph">
-                HOW TO GET THE NOTES OF A SONG:
+HOW TO GET THE NOTES OF A SONG:
 
-                Chroma (audioBuffer, fft, fftSize):
-                1. Compute the STFT of the input audio buffer
-                (fs = 44.1k, N = 4096, Hop = 2048 )
+Chroma (audioBuffer, fft, fftSize):
+1. Compute the STFT of the input audio buffer
+(fs = 44.1k, N = 4096, Hop = 2048 )
 
-                2. Loop: for each window:
-                - spectrum = fft.spectrum //obtain the magnitude spectrum
-                - calculateChromaVector (spectrum)
-                - chromaData.push (chromaVector)
+2. Loop: for each window:
+- spectrum = fft.spectrum //obtain the magnitude spectrum
+- calculateChromaVector (spectrum)
+- chromaData.push (chromaVector)
 
-                3. return chromaData
-
-
-
-
-
-                CalculateChromaVector (spectrum, sampleRate):
-                1. binsize = sampleRate / spectrum.length // frequency resolution
-
-                2. Loop: for i from 0 to spectrum.length/2
-                - frequency = i * binSize
-
-                //calculation of the corresponding pitch class (C, …)
-                - pitchclass = (12*(log2(frequency/440))+12+9))%12
-
-                //magnitude corresponding to the frequency
-                - chromaVector[pitchClass] += spectrum[i]
-
-                3. return chromaVector
+3. return chromaData
 
 
 
 
 
-                ExtractNotesFromChroma(chromaData):
-                1. forEach chromaVector in chromaData:
-                //index corresponding to the max value
-                - max_index = math.max(chromavector)
+CalculateChromaVector (spectrum, sampleRate):
+1. binsize = sampleRate / spectrum.length // frequency resolution
 
-                2. notes.push(noteNames [ max_index ] )
+2. Loop: for i from 0 to spectrum.length/2
+- frequency = i * binSize
 
-                3. return notes // array containing the most relevant note for each window
+//calculation of the corresponding pitch class (C, …)
+- pitchclass = (12*(log2(frequency/440))+12+9))%12
+
+//magnitude corresponding to the frequency
+- chromaVector[pitchClass] += spectrum[i]
+
+3. return chromaVector
+
+
+
+
+
+ExtractNotesFromChroma(chromaData):
+1. forEach chromaVector in chromaData:
+//index corresponding to the max value
+- max_index = math.max(chromavector)
+
+2. notes.push(noteNames [ max_index ] )
+
+3. return notes // array containing the most relevant note for each window
             </div>
         </div>
         <div class="secondaryKeyContainer">
             <div class="paragraph">
-                ONCE WE HAVE THE NOTES, HOW CAN WE DETECT THE KEY?
+ONCE WE HAVE THE NOTES, HOW CAN WE DETECT THE KEY?
 
-                DetectKey(notes):
-                Inspired by Krumhansl-Schmuckler key-finding algorithm, based on ‘key profiles’.
-                A key profile is a vector of 12 values, representing the stability of the 12 pitch classes relative to a
-                given key.
+DetectKey(notes):
+Inspired by Krumhansl-Schmuckler key-finding algorithm, based on ‘key profiles’.
+A key profile is a vector of 12 values, representing the stability of the 12 pitch classes relative to a
+given key.
 
-                These key profiles were obtained from experiments by Krumhansl in which subjects were asked to rate how
-                well each pitch class “fit with” a prior context representing a key (usually a scale).
+These key profiles were obtained from experiments by Krumhansl in which subjects were asked to rate how
+well each pitch class “fit with” a prior context representing a key (usually a scale).
 
-                A high value means that the corresponding pitch class was judged to fit well with a given key.
+A high value means that the corresponding pitch class was judged to fit well with a given key.
 
-                The image shows (for the C major and minor scale) how much weight each note has for key recognition.
+The image shows (for the C major and minor scale) how much weight each note has for key recognition.
 
-                The algorithm works as follows:
+The algorithm works as follows:
             </div>
             <div class="image">
                 <img src="images/key1.png" alt="Image">
             </div>
             <div class="paragraph">
-                noteNames = [ C, C#, D, D#, E, F, F#, G, G#, A, A#, B ]
+noteNames = [ C, C#, D, D#, E, F, F#, G, G#, A, A#, B ]
 
-                1. forEach note in notes :
-                - index = noteNames.indexOf(note)
-                - noteCounts[index]++ ; //occurrences of each pitchClass
+1. forEach note in notes :
+- index = noteNames.indexOf(note)
+- noteCounts[index]++ ; //occurrences of each pitchClass
 
-                2. Loop: for p from 0 to 11 // for each pitchClass
+2. Loop: for p from 0 to 11 // for each pitchClass
 
-                - Shift right the major profile and minor profile by p
-                - Dot product(noteCounts,major profile) //similarity of two vectors
-                - Dot product(noteCounts, minor profile)
+- Shift right the major profile and minor profile by p
+- Dot product(noteCounts,major profile) //similarity of two vectors
+- Dot product(noteCounts, minor profile)
 
-                - If majorCorrelation > bestMajorCorrelation :
-                a. bestMajorCorrelation = majorCorrelation
-                b. bestMajorKey = noteNames [i] + ‘Major’
+- If majorCorrelation > bestMajorCorrelation :
+a. bestMajorCorrelation = majorCorrelation
+b. bestMajorKey = noteNames [i] + ‘Major’
 
-                - If minorCorrelation > bestMinorCorrelation :
-                c. bestMinorCorrelation = minorCorrelation
-                d. bestMinorKey = noteNames [i] + ‘Minor’
+- If minorCorrelation > bestMinorCorrelation :
+c. bestMinorCorrelation = minorCorrelation
+d. bestMinorKey = noteNames [i] + ‘Minor’
 
-                3. return detectedkeys.push(bestMajorKey, bestMinorKey)
+3. return detectedkeys.push(bestMajorKey, bestMinorKey)
             </div>
         </div>
     </div>
@@ -318,28 +318,28 @@
         </h2>
         <div class="image" style="grid-column: 1; grid-row: 2;"><img src="images/algoritmo_A.png" alt="Image"></div>
         <div class="paragraph paragraph_onset" style="grid-column: 2; grid-row: 2;">
-            Algorithm A
+Algorithm A
 
-            The algorithm does absolutely nothing, it keeps the uploaded/recorded file as it is.
+The algorithm does absolutely nothing, it keeps the uploaded/recorded file as it is.
         </div>
         <div class="image" style="grid-column: 1; grid-row: 3;"><img src="images/algoritmo_B.jpg" alt="Image"></div>
         <div class="paragraph paragraph_onset" style="grid-column: 2; grid-row: 3;">
-            Algorithm B
+Algorithm B
 
-            The algorithm trims the audio file so that it starts at the first significant volume peak. Through the
-            numeric input,
-            you can choose a threshold for which the audio file starts from the first moment the volume exceeds the
-            threshold.
-            This can be useful to eliminate any initial silence.
+The algorithm trims the audio file so that it starts at the first significant volume peak. Through the
+numeric input,
+you can choose a threshold for which the audio file starts from the first moment the volume exceeds the
+threshold.
+This can be useful to eliminate any initial silence.
         </div>
         <div class="image" style="grid-column: 1; grid-row: 4;"><img src="images/algoritmo_C.jpg" alt="Image"></div>
         <div class="paragraph paragraph_onset" style="grid-column: 2; grid-row: 4;">
-            Algorithm C
+Algorithm C
 
-            The algorithm leverages information already available from the functions responsible for BPM detection.
-            The algorithm retrieves the group of peaks that identified the BPM of the melody and selects the peak
-            closest to the origin
-            in order to make the audio file start at a point corresponding to a beat.
+The algorithm leverages information already available from the functions responsible for BPM detection.
+The algorithm retrieves the group of peaks that identified the BPM of the melody and selects the peak
+closest to the origin
+in order to make the audio file start at a point corresponding to a beat.
         </div>
     </div>
 
