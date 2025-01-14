@@ -199,18 +199,18 @@ export const bassTracks = [
     ], 90, "jazz"),
 
     new BassTrack([
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C%23_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D%23_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_E_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F%23_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G%23_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A%23_1.wav",
-        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_B_1.wav"
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C%23_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D%23_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_E_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F%23_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G%23_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A%23_2.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_B_2.wav"
     ], 110, "jazz"),
 
     new BassTrack([
