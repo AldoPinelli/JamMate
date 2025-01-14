@@ -85,13 +85,12 @@ uploadBtn.addEventListener('click', () => {
     fileInput = document.createElement('input');
     fileInput.type = 'file';
 
-    //aggiungo un event listener per caricare il file audio
     fileInput.onchange = () => {
         const file = fileInput.files[0];
         if (!validTypes.includes(file.type.toLowerCase())) {
             const errorMessage = 'Tipo di file non supportato. Seleziona un file WAV, MP3 o AIFF.';
             console.error(errorMessage);
-            alert(errorMessage);  // Mostra l'errore tramite un pop-up
+            alert(errorMessage); 
             return;
         }
         console.log("File caricato e pronto per essere lazzarato: ", file);
@@ -140,7 +139,7 @@ let alreadyPressed = false;
 let detectedKeys;
 
 let metronomeStarted = false;
-let metronomeEventId = null; // ID per l'evento del metronomo
+let metronomeEventId = null; 
 function startMetronome(bpm) {
     if (metronomeStarted) return; // Evita di avviare il metronomo se già avviato
     metronomeStarted = true;
@@ -152,21 +151,18 @@ function startMetronome(bpm) {
 
     // Pianifica il metronomo e salva l'ID dell'evento
     metronomeEventId = Tone.Transport.scheduleRepeat((time) => {
-        // Suona il click del metronomo
         metronome.start(time);
     }, 60 / bpm); // Intervallo basato sul BPM
 
-    // Avvia il trasporto (se non è già avviato)
     if (!Tone.Transport.state || Tone.Transport.state === 'stopped') {
         Tone.Transport.start();
     }
 }
 
 function stopMetronome() {
-    if (!metronomeStarted) return; // Se il metronomo non è mai stato avviato, non fare nulla
+    if (!metronomeStarted) return;
     metronomeStarted = false;
 
-    // Ferma il click del metronomo
     if (metronome) {
         metronome.stop();
     }
@@ -179,12 +175,11 @@ function stopMetronome() {
     // Cancella l'evento del metronomo
     if (metronomeEventId !== null) {
         Tone.Transport.clear(metronomeEventId);
-        metronomeEventId = null; // Resetta l'ID
+        metronomeEventId = null; 
     }
 }
 
 recordBtn.addEventListener('click', async () => {
-
     clearElementsToRemove();
     startRecordBtn.style.display = 'inline-block';
     bpmToggleBox.style.display = 'inline-block';
@@ -225,14 +220,13 @@ startRecordBtn.addEventListener('click', async () => {
                 console.log("entered");
                 firstTimeInterval = false;
             }
-            // Aggiorna il display
             countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
             countdown--; // Decrementa il countdown
         
         } else {
             // Quando il countdown finisce, ferma la ripetizione
             clearInterval(countdownInterval); // Ferma il countdown
-            countdownDisplay.style.display = 'none'; // Nascondi il countdown
+            countdownDisplay.style.display = 'none'; 
             if (useBpm === true) {
                 console.log("entrato: ", useBpm);
                 useSelectedBpm = true;
@@ -240,19 +234,18 @@ startRecordBtn.addEventListener('click', async () => {
             } else {
                 useSelectedBpm = false;
             }
-            startRecording(); // Inizia la registrazione
+            startRecording(); 
             startRecordBtn.style.display = 'none';
         }
     }, (60 / selectedBpm) * 1000); // Ogni 60/bpm secondi
 
-    // Avvia il trasporto
     Tone.Transport.start();
 
 });
 
 stopBtn.addEventListener('click', () => {
     if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop(); // Ferma la registrazione
+        mediaRecorder.stop(); 
         clearInterval(countdownInterval);
         clearInterval(recordingInterval);
         timer.style.display = 'none';
@@ -286,7 +279,7 @@ async function startRecording() {
         mediaRecorder = new MediaRecorder(stream, { mimeType });
         recordingChunks = [];
 
-        // Crea e mostra dinamicamente il timer
+        
         let timer = document.getElementById('timer');
         if (!timer) {
             timer = document.createElement('div');
@@ -354,15 +347,12 @@ function resetWaveform() {
 function renderWaveform(audioURL) {
     resetWaveform(); // Resetta la waveform precedente
 
-    // Crea il contenitore per la waveform
     const waveContainer = document.createElement('div');
     waveContainer.id = "waveContainer";
 
-    // Crea il div per la waveform
     const waveform = document.createElement('div');
     waveform.id = "waveform";
 
-    // Aggiungi tutto al DOM
     waveContainer.appendChild(waveform);
     container.appendChild(waveContainer);
 
@@ -370,7 +360,6 @@ function renderWaveform(audioURL) {
     raw_wavesurfer = configureWaveSurfer('#waveform', 'violet', 'purple');
     raw_wavesurfer.load(audioURL);
 
-    // Aggiungi il pulsante Play/Pause
     const playbackBtn = document.createElement('button');
     playbackBtn.id = "playbackBtn";
     playbackBtn.textContent = "Play/Pause";

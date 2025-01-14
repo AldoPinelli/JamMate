@@ -9,7 +9,7 @@ export function getPeaks(data) {
       var volume = Math.max(Math.abs(data[0][j]), Math.abs(data[1][j])); // prendo il massimo tra il canale sinistro e destro
       if (!max || (volume > max.volume)) { //!max per la prima iterazione (il primo sample sara impostato come quello massimo)
         max = {
-          position: j, //si da un numero a ogni sample 
+          position: j, //la posizione del picco
           volume: volume
         };
       }

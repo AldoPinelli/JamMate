@@ -82,8 +82,6 @@ export function detectKey(notes) {
   for (let i = 0; i < 12; i++) {
     const rotatedMajorProfile = rotateArrayRight(majorProfile, i);
     const rotatedMinorProfile = rotateArrayRight(minorProfile, i); 
-    /*const rotatedMajorProfile = majorProfile.slice(i).concat(majorProfile.slice(0, i));
-    const rotatedMinorProfile = minorProfile.slice(i).concat(minorProfile.slice(0, i)); */
 
     const majorCorrelation = calculateDotProduct(noteCounts, rotatedMajorProfile);
     const minorCorrelation = calculateDotProduct(noteCounts, rotatedMinorProfile);
