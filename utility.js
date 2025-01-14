@@ -509,32 +509,34 @@ export async function cutAudioBuffer(audioBuffer, loopLengthInBars, audioContext
     'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
   };
   
-// logica di estrazione databse
-function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks, bpm) {
-  let selectedTrack;
-  if (trackType === 'drum') {
-    // Filtra le tracce di batteria con il genere specificato e il bpm <= quello passato
-    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
-    selectedTrack = genreTracks.reduce((prev, curr) => {
-      return (Math.abs(curr.getBpm() - bpm) < Math.abs(prev.getBpm() - bpm) ? curr : prev);
-    });
-    console.log("Genre Tracks:", genreTracks);
-    // Ordina per bpm decrescente e seleziona la prima traccia
-    selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0].getUrl();
-  } else if (trackType === 'bass') {
-    // Filtra le tracce di basso con il genere specificato e il bpm <= quello passato
-    const genreTracks = bassTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
-    // Trova la traccia con il bpm più vicino a quello passato come parametro
-    selectedTrack = genreTracks.reduce((prev, curr) => {
-      return (Math.abs(curr.getBpm() - bpm) < Math.abs(prev.getBpm() - bpm) ? curr : prev);
-    });
-    // Mappa la tonalità all'indice
-    const keyIndex = keyMap[key]; // Mappa la tonalità alla sua posizione (0 - 11)
-    selectedTrack = selectedTrack.getUrls()[keyIndex]; // Prendi la traccia corrispondente alla tonalità
-  }
-  return selectedTrack;
-}
 
+  function findClosestTrack(tracks, genre, bpm) {
+    const genreTracks = tracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
+    if (genreTracks.length === 0) {
+      return null;
+    }
+    return genreTracks.reduce((prev, curr) => {
+      return (Math.abs(curr.getBpm() - bpm) < Math.abs(prev.getBpm() - bpm) ? curr : prev);
+    });
+  }
+
+  function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks, bpm) {
+    let selectedTrack;
+  
+    if (trackType === 'drum') {
+      selectedTrack = findClosestTrack(drumTracks, genre, bpm);
+      return selectedTrack ? selectedTrack.getUrl() : null; // Restituisci l'URL della traccia
+    } else if (trackType === 'bass') {
+      selectedTrack = findClosestTrack(bassTracks, genre, bpm);
+      if (selectedTrack) {
+        const keyIndex = keyMap[key]; // Mappa la tonalità alla sua posizione (0 - 11)
+        return selectedTrack.getUrls()[keyIndex]; // Prendi la traccia corrispondente alla tonalità
+      }
+    }
+  
+    return null;
+  }
+  
 
 export async function selectTracks(selectedGenres, selectedKey, drumTracks, bassTracks, bpm) {
   let drumUrl, bassUrl;

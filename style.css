@@ -28,10 +28,6 @@ body {
   overflow-y: auto;
 }
 
-.hidden {
-  display: none;
-}
-
 .container2 {
   position: fixed;
   top: 0;
