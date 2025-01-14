@@ -43,9 +43,7 @@ bpmInput.addEventListener('input', () => {
 });
 
 const elementsToRemove = [
-    'loadingContainer', 'loadingText', 'lol', 'resultContainer',
-    'bpmContainer', 'bpmText', 'info-bpm', 'keysContainer', 'keysText',
-    'info-keys', 'actionButton'
+    'loadingContainer', 'resultContainer'
 ];
 
 const metronomeURL = "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/metronome.mp3";
@@ -386,7 +384,13 @@ function renderWaveform(audioURL) {
     analyzeBtn.classList.add('styled-button');
     waveContainer.appendChild(analyzeBtn);
 
+
+    let alreadyPressedAnalyze = false;
     analyzeBtn.addEventListener('click', async () => {
+        if (alreadyPressedAnalyze) {
+            return;
+        }
+        alreadyPressedAnalyze = true;
         clearElementsToRemove();
         console.log("useSelectedbpm & lastSelectedBpm ", useSelectedBpm, lastSelectedBpm);
 
@@ -491,6 +495,7 @@ function renderWaveform(audioURL) {
                 keyInfoContainer.style.display = 'grid';
             });
 
+            alreadyPressedAnalyze = false;
 
             actionButton.addEventListener('click', () => {
                 raw_wavesurfer.stop();
