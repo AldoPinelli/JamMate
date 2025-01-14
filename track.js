@@ -70,6 +70,7 @@ export const drumTracks = [
     new DrumTrack("https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/rap/drum_rap_110.mp3", 110, "rap"),
     new DrumTrack("https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/rap/drum_rap_165.mp3", 165, "rap"),
     new DrumTrack("https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/rap/drum_rap_85.mp3", 85, "rap"),
+    new DrumTrack("https://storage.googleapis.com/audio-actam-bucket/Drum-Folder/rap/drum_rap_120.mp3", 120, "rap"),
 ];
 
 export const bassTracks = [
@@ -120,6 +121,21 @@ export const bassTracks = [
         "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass3_150/bass_funk_B_150.mp3"
     ], 150, "funk"),
 
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_C_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_C%23_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_D_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_D%23_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_E_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_F_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_F%23_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_G_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_G%23_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_A_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_A%23_89.mp3",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/funk/bass_89/bass_funk_B_89.mp3"
+    ], 89, "funk"),
+
 
 
     new BassTrack([
@@ -167,9 +183,127 @@ export const bassTracks = [
         "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/rap/bass160/bass_rap_B_160.mp3"
     ], 160, "rap"),
 
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_90/jazz_90_B_1.wav"
+    ], 90, "jazz"),
 
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_110/jazz_110_B_1.wav"
+    ], 110, "jazz"),
 
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_130/jazz_130_B_1.wav"                           
+    ], 130, "jazz"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/jazz/bass_150/jazz_150_B_1.wav"
+    ], 150, "jazz"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_90/latin_90_B_1.wav"
+    ], 90, "latin"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_110/latin_110_B_1.wav"
+    ], 110, "latin"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_130/latin_130_B_1.wav"
+    ], 130, "latin"),
+
+    new BassTrack([
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_C_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_C%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_D_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_D%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_E_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_F_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_F%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_G_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_G%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_A_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_A%23_1.wav",
+        "https://storage.googleapis.com/audio-actam-bucket/Bass-Folder/latin/bass_150/latin_150_B_1.wav"
+    ], 150, "latin")
 ];
+
 
 export const availableMelodies = [
     "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/piano_121_Am.mp3",
