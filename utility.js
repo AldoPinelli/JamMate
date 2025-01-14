@@ -513,7 +513,10 @@ function selectTrackByGenreAndKey(genre, key, trackType, drumTracks, bassTracks,
   let selectedTrack;
   if (trackType === 'drum') {
     // Filtra le tracce di batteria con il genere specificato e il bpm <= quello passato
-    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase() && track.getBpm() <= bpm);
+    const genreTracks = drumTracks.filter(track => track.getGenre().toLowerCase() === genre.toLowerCase());
+    selectedTrack = genreTracks.reduce((prev, curr) => {
+      return (Math.abs(curr.getBpm() - bpm) < Math.abs(prev.getBpm() - bpm) ? curr : prev);
+    });
     console.log("Genre Tracks:", genreTracks);
     // Ordina per bpm decrescente e seleziona la prima traccia
     selectedTrack = genreTracks.sort((a, b) => b.getBpm() - a.getBpm())[0].getUrl();
