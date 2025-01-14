@@ -215,20 +215,20 @@ startRecordBtn.addEventListener('click', async () => {
     countdownDisplay.style.display = 'block';
     countdown = 7;
     let firstTimeInterval = true;
-    countdownInterval = setInterval(() => {
+    countdownInterval = setInterval(async () => {
         if (countdown >= 0) {
-            // Aggiorna il display
-            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
-            countdown--; // Decrementa il countdown
             if (firstTimeInterval === true) {
                 if (useBpm === true) {
                     console.log("entrato useBpm: ", useBpm);
-                    startMetronome(selectedBpm);
+                    await startMetronome(selectedBpm);
                 }
                 console.log("entered");
                 firstTimeInterval = false;
             }
-
+            // Aggiorna il display
+            countdownDisplay.textContent = `La registrazione parte fra ${countdown}...`;
+            countdown--; // Decrementa il countdown
+        
         } else {
             // Quando il countdown finisce, ferma la ripetizione
             clearInterval(countdownInterval); // Ferma il countdown
@@ -312,7 +312,7 @@ async function startRecording() {
         recordingInterval = setInterval(() => {
             seconds++;
             timeElapsed.textContent = seconds;
-        }, 1000);
+        }, (60/selectedBpm)* 1000);
 
         // Eventi MediaRecorder
         mediaRecorder.ondataavailable = (e) => recordingChunks.push(e.data);

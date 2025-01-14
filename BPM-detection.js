@@ -1,4 +1,3 @@
-
 export function getPeaks(data) {
   var partSize = 22050; // 0.5 secondi
   var parts = data[0].length / partSize;
@@ -71,8 +70,6 @@ export function getIntervals(peaks) { //calcolo la distanza tra i picchi
 
 }
   
-
-
 export function getBpm(buffer) {
   const peaks = getPeaks([buffer.getChannelData(0), buffer.getChannelData(1)]);
   const groups = getIntervals(peaks);
@@ -83,7 +80,6 @@ export function getBpm(buffer) {
 
   return Math.round(top[0].tempo);
 }
-
 
 export function getClosestPeakToZero(groups) {
   if (!groups || groups.length === 0) {
