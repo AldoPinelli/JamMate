@@ -310,4 +310,7 @@ export const availableMelodies = [
     "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/trap_130_Em.mp3",
     "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/guitarelectric_Cm_130.wav",
     "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/simpleguitar_D_108.wav",
+    "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/sax1_Fm_83.wav",
+    "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/sax2_Fm_100.wav",
+    "https://storage.googleapis.com/audio-actam-bucket/availableMelodies/sax3_Cm_120.wav"
 ]

@@ -1,7 +1,7 @@
 import * as BPM_detection from './BPM-detection.js';
 import * as Utility from './utility.js';
 import * as KEY_detection from './KEY-detection.js';
-import * as buffer_to_wav from './buffer_to_wav.js';
+import * as buffer_to_wav from './libs/buffer_to_wav.js';
 import { drumTracks, bassTracks, availableMelodies } from './track.js';
 
 
@@ -103,23 +103,26 @@ uploadBtn.addEventListener('click', () => {
 
 });
 
+let currentIndex = 0;
 randomMelodyBtn.addEventListener('click', () => {
     clearElementsToRemove();
     startRecordBtn.style.display = 'none';
     stopBtn.style.display = 'none';
     bpmToggleBox.style.display = 'none';
     infoRecordBtn.style.display = 'none';
-    const randomIndex = Math.floor(Math.random() * availableMelodies.length);
-    const randomMelodyUrl = availableMelodies[randomIndex];
-    console.log('Random Melody URL:', randomMelodyUrl);
+    
+    const randomMelodyUrl = availableMelodies[currentIndex];
+    console.log('Melody URL:', randomMelodyUrl);
     fetch(randomMelodyUrl)
         .then(response => response.blob())
         .then(blob => {
             uploaded_file = new File([blob], "randomMelody.mp3", { type: blob.type });
         })
-        .catch(error => console.error('Errore durante il fetch della melodia casuale:', error));
+        .catch(error => console.error('Errore durante il fetch della melodia:', error));
     useSelectedBpm = false;
     renderWaveform(randomMelodyUrl);
+    
+    currentIndex = (currentIndex + 1) % availableMelodies.length;
 });
 
 
@@ -589,7 +592,13 @@ let bassWave = configureWaveSurfer('#bassWaveform', 'blue', 'lightblue');
 let selectedKey;
 let selectedGenres = [];
 let selectedLoopLength;
-let selectedAlgorithm;
+let selectedAlgorithm='A';
+document.querySelectorAll('.algorithm-btn').forEach(button => {
+    if (button.textContent === 'Algorithm A') {
+        button.classList.add('selected');
+    }
+});
+
 
 let selectedUrls;
 let drumUrlCloud;
