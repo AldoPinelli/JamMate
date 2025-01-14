@@ -748,6 +748,10 @@ jamButton.addEventListener('click', async () => {
     setTimeout(() => {
         container3.style.display = "flex";
         controls.style.display = 'block';
+        const existingLoadingContainer2 = document.getElementById('loadingContainer2');
+        if (existingLoadingContainer2) {
+            existingLoadingContainer2.remove();
+        }
     }, 2000);
 
 
